@@ -5,8 +5,8 @@ POST  http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-    "email": "nadavTheKing@gmail.com",
-    "password": "crypto123"
+    "email": "itai@gmail.com",
+    "password": "itai111"
 }
 
 ###
@@ -40,4 +40,4 @@ GET http://localhost:3000/auth/users
 
 // get all users by id from Atlas
 
-GET http://localhost:3000/auth/624c6c929f071e064653a4c2
+GET http://localhost:3000/auth/624c7d3f345567a910980d93
