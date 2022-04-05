@@ -11,7 +11,7 @@ const sendError = (res, code, message) => {
 
 // ** REGISTER **
 const register = async (req, res, next) => {
-    console.log('Register');
+    console.log('User Register');
     const email = req.body.email
     const password = req.body.password
 
@@ -34,13 +34,13 @@ const register = async (req, res, next) => {
         res.status(200).send(newUser)
 
     } catch (err) {
-        return sendError(res, 400, err.message)
+        sendError(res, 400, err.message)
     }
 }
 
 // ** LOGIN **
 const login = async (req, res, next) => {
-    console.log('Login');
+    console.log('User Login');
 
     const email = req.body.email
     const password = req.body.password
@@ -69,16 +69,23 @@ const login = async (req, res, next) => {
         })
 
     } catch (err) {
-        return sendError(res, 400, err.message)
+        sendError(res, 400, err.message)
     }
 }
 
 // ** LOGOUT **
 const logout = async (req, res, next) => {
-    res.status(400).send({
-        'status': 'failed',
-        'error': 'not implemented'
-    })
+    try {
+        res.cookie('jwt', 'logout', {
+            expires: new Date(Date.now() + 5 * 1000),
+            httpOnly: true
+        });
+        res.status(200).send({
+            'status': 'user logged out successfully'
+        });
+    } catch (err) {
+        sendError(res, 400, err.message);
+    }
 }
 
 const getUsers = async (req, res, next) => {
@@ -87,7 +94,17 @@ const getUsers = async (req, res, next) => {
         res.status(200).send(users)
 
     } catch (err) {
-        return sendError(res, 400, err.message)
+        sendError(res, 400, err.message)
+    }
+}
+
+const getUserById = async (req, res, next) => {
+    try {
+        user = await User.findById(req.params.id)
+        res.status(200).send(user)
+
+    } catch (err) {
+        sendError(res, 400, err.message)
     }
 }
 
@@ -95,5 +112,6 @@ module.exports = {
     login,
     register,
     logout,
-    getUsers
+    getUsers,
+    getUserById
 }

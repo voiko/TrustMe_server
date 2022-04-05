@@ -1,26 +1,43 @@
 ###
+// check register user from Atlas
 
 POST  http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-    "email": "orkravitz@gmail.com",
-    "password": "123456"
+    "email": "nadavTheKing@gmail.com",
+    "password": "crypto123"
 }
 
 ###
+// check login user from Atlas
 
 POST  http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "orkravitz@gmail.com",
-    "password": "123456"
+    "email": "nadavTheKing@gmail.com",
+    "password": "crypto123"
+}
+
+###
+// check login user from Atlas
+
+POST  http://localhost:3000/auth/logout
+Content-Type: application/json
+
+{
+    "email": "nadavTheKing@gmail.com",
+    "password": "crypto123"
 }
 
 ### 
-
+// get all users from Atlas
 
 GET http://localhost:3000/auth/users
 
 ###
+
+// get all users by id from Atlas
+
+GET http://localhost:3000/auth/624c6c929f071e064653a4c2
