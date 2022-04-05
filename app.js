@@ -1,24 +1,25 @@
-const express = require('express');
-const app = express();
-const PORT = 3000;
-const {
-    dbConfig
-} = require('./config/db');
-// const userRoutes = require('./routes/user');
-const mongoose = require('mongoose');
+app = require('./server')
+const mongoose = require('mongoose')
 
-app.listen(PORT, async (err) => {
+const port = process.env.PORT;
+const uri = process.env.ATLAS_URI
+
+// const userRoutes = require('./routes/user');
+
+app.listen(port, async (err) => {
     if (err) {
         console.error(err);
         return;
     }
+    console.log(`Server is up and listenning on port ${port}, connecting to mongoDB...`);
     try {
-        const connection = await mongoose.connect(dbConfig.uri, {
+        //mongodb atlas
+        const connection = await mongoose.connect(uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         })
-        console.log("Server and mongoDB is up!");
+        console.log('connected to mongoose successfully!')
     } catch (err) {
-        console.log(err);
+        console.log('failed to connect to mongoose' + err.message);
     }
 })
