@@ -5,9 +5,13 @@ POST  http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-    "email": "itai@gmail.com",
-    "password": "itai111"
-}
+    "email": "orkr@gmail.com",
+    "password": "gilgil",
+    "password_confirm": "gilgil",
+    "first_name": "Or",
+    "last_name": "Kravitz",
+    "birthday": "8/2/1993",
+    "phoneNumber": "054666789"}
 
 ###
 // check login user from Atlas
