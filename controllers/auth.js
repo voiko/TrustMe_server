@@ -11,9 +11,13 @@ const sendError = (res, code, message) => {
 
 // ** REGISTER **
 const register = async (req, res, next) => {
-    console.log('User Register');
     const email = req.body.email
     const password = req.body.password
+    const confirmPassword = req.body.confirmPassword
+    const firstName = req.body.firstName
+    const lastName = req.body.lastName
+    const birthday = req.body.birthday
+    const phoneNumber = req.body.phoneNumber
 
     try {
         const exists = await User.findOne({
@@ -27,9 +31,14 @@ const register = async (req, res, next) => {
 
         const user = User({
             'email': email,
-            'password': hashPassword
+            'password': hashPassword,
+            'confirmPassword': confirmPassword,
+            'firstName': firstName,
+            'lastName': lastName,
+            'birthday': birthday,
+            'phoneNumber': phoneNumber
         })
-
+        console.log('User registered and save to database. ');
         newUser = await user.save();
         res.status(200).send(newUser)
 
@@ -40,7 +49,6 @@ const register = async (req, res, next) => {
 
 // ** LOGIN **
 const login = async (req, res, next) => {
-    console.log('User Login');
 
     const email = req.body.email
     const password = req.body.password
@@ -64,6 +72,8 @@ const login = async (req, res, next) => {
                 expiresIn: process.env.JWT_TOKEN_EXPIRATION
             }
         )
+        console.log('A user is logged in.');
+
         res.status(200).send({
             'accessToken': accessToken
         })
