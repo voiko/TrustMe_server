@@ -45,7 +45,7 @@ const signup = async (req, res, next) => {
         const newUser = await user.save()
             .then(result => {
                 res.status(201).json({
-                    message: 'User Created',
+                    message: 'User Created!',
                     result: result
                 })
             }).catch(err => {

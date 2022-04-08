@@ -17,16 +17,16 @@ const userSchema = new mongoose.Schema({
     },
     firstName: {
         type: String,
-        required: true
+        required: false
 
     },
     lastName: {
         type: String,
-        required: true
+        required: false
     },
     confirmPassword: {
         type: String,
-        required: true
+        required: false
     },
     birthday: {
         type: String,
@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
     },
     phoneNumber: {
         type: String,
-        required: true
+        required: false
     }
 })
 
