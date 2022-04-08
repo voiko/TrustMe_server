@@ -1,15 +1,15 @@
 ###
 // check register user from Atlas
 
-POST  http://localhost:3000/auth/register
+POST  http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-    "email": "orkr@gmail.com",
+    "email": "orkrr@gmail.com",
     "password": "gilgil",
     "password_confirm": "gilgil",
-    "first_name": "Or",
-    "last_name": "Kravitz",
+    "firstName": "Or",
+    "lastName": "Kravitz",
     "birthday": "8/2/1993",
     "phoneNumber": "054666789"}
 

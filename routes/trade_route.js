@@ -1,3 +1,6 @@
+import mongoose from "mongoose";
+
+
 const express = require('express')
 const router = express.Router()
 const Trade = require('../controllers/trade')
