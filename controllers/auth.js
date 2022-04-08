@@ -9,8 +9,8 @@ const sendError = (res, code, message) => {
     })
 }
 
-// ** REGISTER **
-const register = async (req, res, next) => {
+// ** SignUp **
+const signup = async (req, res, next) => {
     const email = req.body.email
     const password = req.body.password
     const confirmPassword = req.body.confirmPassword
@@ -29,7 +29,7 @@ const register = async (req, res, next) => {
         const salt = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(password, salt)
 
-        const user = User({
+        const user = new User({
             'email': email,
             'password': hashPassword,
             'confirmPassword': confirmPassword,
@@ -39,9 +39,20 @@ const register = async (req, res, next) => {
             'phoneNumber': phoneNumber
         })
         console.log('User registered and save to database. ');
-        newUser = await user.save();
-        res.status(200).send(newUser)
+        // newUser = await user.save();
+        // res.status(200).send(newUser)
 
+        const newUser = await user.save()
+            .then(result => {
+                res.status(201).json({
+                    message: 'User Created',
+                    result: result
+                })
+            }).catch(err => {
+                res.status(500).json({
+                    'error': err
+                })
+            })
     } catch (err) {
         sendError(res, 400, err.message)
     }
@@ -120,7 +131,7 @@ const getUserById = async (req, res, next) => {
 
 module.exports = {
     login,
-    register,
+    signup,
     logout,
     getUsers,
     getUserById
