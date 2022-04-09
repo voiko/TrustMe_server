@@ -32,15 +32,21 @@ const signup = async (req, res, next) => {
         const user = new User({
             'email': email,
             'password': hashPassword,
-            'confirmPassword': confirmPassword,
+            // 'confirmPassword': confirmPassword,
             'firstName': firstName,
             'lastName': lastName,
             'birthday': birthday,
             'phoneNumber': phoneNumber
         })
+
+        if (confirmPassword != password) {
+            alert('Please enter same password.')
+        }
+
         console.log('User registered and save to database. ');
         // newUser = await user.save();
         // res.status(200).send(newUser)
+
 
         const newUser = await user.save()
             .then(result => {

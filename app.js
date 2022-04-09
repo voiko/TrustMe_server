@@ -18,8 +18,8 @@ app.listen(port, async (err) => {
             useNewUrlParser: true,
             useUnifiedTopology: true
         })
-        console.log('connected to mongoose successfully!')
+        console.log('Connected to mongoose successfully!')
     } catch (err) {
-        console.log('failed to connect to mongoose' + err.message);
+        console.log('Connection failed!' + err.message);
     }
 })
