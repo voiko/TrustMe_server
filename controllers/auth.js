@@ -13,11 +13,11 @@ const sendError = (res, code, message) => {
 const signup = async (req, res, next) => {
     const email = req.body.email
     const password = req.body.password
-    const confirmPassword = req.body.confirmPassword
     const firstName = req.body.firstName
     const lastName = req.body.lastName
     const birthday = req.body.birthday
     const phoneNumber = req.body.phoneNumber
+    const created = req.body.created
 
     try {
         const exists = await User.findOne({
@@ -32,16 +32,12 @@ const signup = async (req, res, next) => {
         const user = new User({
             'email': email,
             'password': hashPassword,
-            // 'confirmPassword': confirmPassword,
             'firstName': firstName,
             'lastName': lastName,
             'birthday': birthday,
+            'created': created,
             'phoneNumber': phoneNumber
         })
-
-        if (confirmPassword != password) {
-            alert('Please enter same password.')
-        }
 
         console.log('User registered and save to database. ');
         // newUser = await user.save();

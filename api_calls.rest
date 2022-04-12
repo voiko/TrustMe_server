@@ -5,9 +5,9 @@ POST  http://localhost:3000/api/users/signup
 Content-Type: application/json
 
 {
-    "email": "orkr123@gmail.com",
-    "password": "or",
-    "password_confirm": "or",
+    "email": "or@gmail.com",
+    "password": "1111",
+    "password_confirm": "1111",
     "firstName": "Or",
     "lastName": "Kravitz",
     "birthday": "8/2/1993",
