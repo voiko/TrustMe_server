@@ -20,6 +20,9 @@ app.use(bodyParser.json())
 const authRouter = require('./routes/auth_route')
 app.use('/api/users', authRouter)
 
+const tradeRouter = require('./routes/trade_route');
+app.use('/api/contracts', tradeRouter);
+
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(

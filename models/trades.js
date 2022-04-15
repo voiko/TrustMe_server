@@ -1,29 +1,25 @@
 const mongoose = require('mongoose')
 
 const tradeSchema = new mongoose.Schema({
-    tradeId: {
-        type: String,
-        required: true
-    },
-    data: {
-        type: String,
-        required: false
-    },
-    buyerId: {
-        type: String,
-        required: true
-    },
-    sellerId: {
-        type: String,
-        required: true
-    },
-    deposit: {
+    side: {
         type: String,
         required: true
     },
     description: {
         type: String,
-        required: false
+        required: true
+    }, 
+    deposit: {
+        type: Number,
+        required: true
+    },
+    emailOfAnotherSide: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: Date,
+        required: true
     }
 })
 
