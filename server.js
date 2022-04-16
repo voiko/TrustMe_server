@@ -4,6 +4,8 @@ const app = express()
 const bodyParser = require('body-parser')
 const jwt = require('express-jwt')
 const cors = require('cors')
+var path = require('path');
+
 
 const port = process.env.PORT
 const uri = process.env.ATLAS_URI
@@ -17,9 +19,16 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(bodyParser.json())
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+// routes
 const authRouter = require('./routes/auth_route')
 app.use('/api/users', authRouter)
 
+const homeRouter = require('./routes/home_route')
+app.use('/home', homeRouter)
+
+//
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
