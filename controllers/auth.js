@@ -11,6 +11,7 @@ const sendError = (res, code, message) => {
 
 // ** SignUp **
 const signup = async (req, res, next) => {
+
     const email = req.body.email
     const password = req.body.password
     const firstName = req.body.firstName
@@ -87,9 +88,12 @@ const login = async (req, res, next) => {
         )
         console.log('A user is logged in.');
 
-        res.status(200).send({
-            'accessToken': accessToken
-        })
+        setTimeout(() => {
+            res.status(200).send({
+                'accessToken': accessToken
+            })
+        }, 2000)
+
 
     } catch (err) {
         sendError(res, 400, err.message)
