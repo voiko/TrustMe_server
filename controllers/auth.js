@@ -12,17 +12,17 @@ const sendError = (res, code, message) => {
 // ** SignUp **
 const signup = async (req, res, next) => {
 
-    const email = req.body.email
+    // const email = req.body.email
     const password = req.body.password
-    const firstName = req.body.firstName
-    const lastName = req.body.lastName
-    const birthday = req.body.birthday
-    const phoneNumber = req.body.phoneNumber
-    const created = req.body.created
+    // const firstName = req.body.firstName
+    // const lastName = req.body.lastName
+    // const birthday = req.body.birthday
+    // const phoneNumber = req.body.phoneNumber
+    // const created = req.body.created
 
     try {
         const exists = await User.findOne({
-            'email': email
+            'email':  req.body.email
         })
         if (exists != null) {
             return sendError(res, 400, 'user already exists')
@@ -31,15 +31,15 @@ const signup = async (req, res, next) => {
         const hashPassword = await bcrypt.hash(password, salt)
 
         const user = new User({
-            'email': email,
-            'password': hashPassword,
-            'firstName': firstName,
-            'lastName': lastName,
-            'birthday': birthday,
-            'created': created,
-            'phoneNumber': phoneNumber
+            email : req.body.email,
+            password : hashPassword,
+            firstName : req.body.firstName,
+            lastName : req.body.lastName,
+            birthday : req.body.birthday,
+            phoneNumber : req.body.phoneNumber,
+            created : req.body.created
         })
-
+        
         console.log('User registered and save to database. ');
         // newUser = await user.save();
         // res.status(200).send(newUser)

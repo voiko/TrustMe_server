@@ -15,21 +15,20 @@ const userSchema = new mongoose.Schema({
     },
     firstName: {
         type: String,
-
+        required: true
     },
     lastName: {
         type: String,
+        required: true
     },
     birthday: {
-        type: Date,
-        default: new Date()
+        type: Date
     },
     created: {
         type: Date,
-        default: new Date()
     },
     phoneNumber: {
-        type: Number,
+        type: Number
     },
     userID: {
         type: String,
