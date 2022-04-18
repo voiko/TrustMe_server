@@ -1,8 +1,6 @@
 const express = require('express')
 const router = express.Router()
 
-
-
 router.get('/', (req, res, next) => {
 
     setTimeout(() => {
@@ -59,7 +57,7 @@ router.get('/', (req, res, next) => {
             ]
         }
         res.status(200).json(jsonResponse)
-    }, 2000);
+    }, 0000);
 
 
 });

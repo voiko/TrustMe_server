@@ -22,7 +22,7 @@ const signup = async (req, res, next) => {
 
     try {
         const exists = await User.findOne({
-            'email':  req.body.email
+            'email': req.body.email
         })
         if (exists != null) {
             return sendError(res, 400, 'user already exists')
@@ -31,15 +31,15 @@ const signup = async (req, res, next) => {
         const hashPassword = await bcrypt.hash(password, salt)
 
         const user = new User({
-            email : req.body.email,
-            password : hashPassword,
-            firstName : req.body.firstName,
-            lastName : req.body.lastName,
-            birthday : req.body.birthday,
-            phoneNumber : req.body.phoneNumber,
-            created : req.body.created
+            email: req.body.email,
+            password: hashPassword,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            birthday: req.body.birthday,
+            phoneNumber: req.body.phoneNumber,
+            created: req.body.created
         })
-        
+
         console.log('User registered and save to database. ');
         // newUser = await user.save();
         // res.status(200).send(newUser)
@@ -92,7 +92,7 @@ const login = async (req, res, next) => {
             res.status(200).send({
                 'accessToken': accessToken
             })
-        }, 2000)
+        }, 1000)
 
 
     } catch (err) {
