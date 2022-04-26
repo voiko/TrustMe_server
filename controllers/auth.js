@@ -11,14 +11,7 @@ const sendError = (res, code, message) => {
 
 // ** SignUp **
 const signup = async (req, res, next) => {
-
-    // const email = req.body.email
     const password = req.body.password
-    // const firstName = req.body.firstName
-    // const lastName = req.body.lastName
-    // const birthday = req.body.birthday
-    // const phoneNumber = req.body.phoneNumber
-    // const created = req.body.created
 
     try {
         const exists = await User.findOne({
@@ -92,7 +85,7 @@ const login = async (req, res, next) => {
             res.status(200).send({
                 'accessToken': accessToken
             })
-        }, 1000)
+        }, 2000)
 
 
     } catch (err) {

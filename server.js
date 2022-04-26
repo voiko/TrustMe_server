@@ -6,7 +6,6 @@ const jwt = require('express-jwt')
 const cors = require('cors')
 var path = require('path');
 
-
 const port = process.env.PORT
 const uri = process.env.ATLAS_URI
 

@@ -28,6 +28,12 @@ router.get('/', (req, res, next) => {
                     title: 'Making a payment using Bitcoin currencies',
                     cols: 2,
                     rows: 1
+                },
+                {
+                    imageName: 'bitcoin2',
+                    title: 'Safe trade with your smart phone',
+                    cols: 2,
+                    rows: 1
                 }
             ],
             "webCards": [{ // for bigger screen settings
@@ -51,6 +57,13 @@ router.get('/', (req, res, next) => {
                 {
                     imageName: 'bitcoin',
                     title: 'Making a payment using Bitcoin currencies',
+                    cols: 1,
+                    rows: 1
+
+                },
+                {
+                    imageName: 'bitcoin2',
+                    title: 'Safe trade with your smart phone',
                     cols: 1,
                     rows: 1
                 }
