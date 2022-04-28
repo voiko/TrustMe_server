@@ -34,8 +34,6 @@ const signup = async (req, res, next) => {
         })
 
         console.log('User registered and save to database. ');
-        // newUser = await user.save();
-        // res.status(200).send(newUser)
 
 
         const newUser = await user.save()
@@ -81,11 +79,11 @@ const login = async (req, res, next) => {
         )
         console.log('A user is logged in.');
 
-        setTimeout(() => {
-            res.status(200).send({
-                'accessToken': accessToken
-            })
-        }, 2000)
+        //setTimeout(() => {
+        res.status(200).send({
+            'accessToken': accessToken
+        })
+        // }, 2000)
 
 
     } catch (err) {
