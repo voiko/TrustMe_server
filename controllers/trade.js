@@ -16,12 +16,26 @@ const sendError = (res, code, message) => {
 
 const add = (req, res, next) => {
   const contract = new Trade({
-    side: req.body.side,
     description: req.body.description,
     deposit: req.body.deposit,
-    emailOfAnotherSide: req.body.emailOfAnotherSide,
-    date: req.body.date
+    email: req.body.email,
+    date: req.body.date,
+    sellerId: req.body.sellerId,
+    buyerId: null
   });
+  Trade.findOne({
+    email: contract.email
+  }).then(
+    data => {
+      // contract.buyerId = data.id;
+      console.log(data);
+    }, error => {
+      return res.status(code).send({
+        'status': 'failed',
+        'error': message
+      });
+    });
+
   contract.save().then((result) => {
     res.status(201).json({
       message: 'contract added successfully',
@@ -33,6 +47,7 @@ const add = (req, res, next) => {
 }
 
 const getContract = async (req, res) => {
+  //Trade.find({$or:[{sellerid:req.user},{buyerid:req.user}]).then(documents => {
   Trade.find().then(documents => {
     res.status(200).json({
       message: 'posts fetched successfully',

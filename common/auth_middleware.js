@@ -3,15 +3,15 @@ const jwt = require('jsonwebtoken');
 
 const authenticate = async (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeaders.split(' ')[1] // the field in the first place
+    const token = authHeader && authHeader.split(' ')[1] // the field in the first place
     if (token == null) {
-        return res.sendStatus(401).json({
+        return res.status(401).json({
             message: 'Auth Failed!'
         });
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err) {
-            return res.sendStatus(403).json({
+            return res.status(403).json({
                 message: 'Auth Failed!'
             })
         }
