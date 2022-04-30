@@ -7,7 +7,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         unique: true, // in order to not save on database same email 
         required: true
-
     },
     password: {
         type: String,

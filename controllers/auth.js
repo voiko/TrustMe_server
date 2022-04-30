@@ -54,42 +54,46 @@ const signup = async (req, res, next) => {
 
 // ** LOGIN **
 const login = async (req, res, next) => {
-
-    const email = req.body.email
-    const password = req.body.password
-
-    if (email == null || password == null) return sendError(res, 400, 'Invalid email or password')
-    try {
-        const user = await User.findOne({
-            'email': email
+    let fetchedUser;
+    User.findOne({
+            email: req.body.email
         })
-        if (user == null) return sendError(res, 400, 'Invalid email or password')
-
-        const match = await bcrypt.compare(password, user.password)
-        if (!match) {
-            return sendError(res, 400, 'Invalid email or password')
-        }
-
-        const accessToken = await jwt.sign({
-                '_id': user._id
-            },
-            process.env.ACCESS_TOKEN_SECRET, {
-                expiresIn: process.env.JWT_TOKEN_EXPIRATION
+        .then(user => {
+            if (!user) {
+                return res.status(401).json({
+                    message: "Auth failed"
+                });
             }
-        )
-        console.log('A user is logged in.');
-
-        //setTimeout(() => {
-        res.status(200).send({
-            'accessToken': accessToken
+            fetchedUser = user;
+            return bcrypt.compare(req.body.password, user.password);
         })
-        // }, 2000)
-
-
-    } catch (err) {
-        sendError(res, 400, err.message)
-    }
+        .then(result => {
+            if (!result) {
+                return res.status(401).json({
+                    message: "Auth failed"
+                });
+            }
+            const accessToken = jwt.sign({
+                    email: fetchedUser.email,
+                    userId: fetchedUser._id
+                },
+                process.env.ACCESS_TOKEN_SECRET, {
+                    expiresIn: process.env.JWT_TOKEN_EXPIRATION
+                });
+            res.status(200).json({
+                'accessToken': accessToken,
+                expiresIn: 3600
+            });
+        })
+        .catch(err => {
+            return res.status(401).json({
+                message: "Auth failed"
+            });
+        });
 }
+
+
+
 
 // ** LOGOUT **
 const logout = async (req, res, next) => {
@@ -133,3 +137,23 @@ module.exports = {
     getUsers,
     getUserById
 }
+
+
+
+
+
+
+// const accessToken = await jwt.sign({
+//     '_id': user._id
+// },
+// process.env.ACCESS_TOKEN_SECRET, {
+//     expiresIn: process.env.JWT_TOKEN_EXPIRATION
+// }
+// )
+// console.log('A user is logged in.');
+
+// //setTimeout(() => {
+// res.status(200).send({
+// 'accessToken': accessToken
+// })
+// // }, 2000)
