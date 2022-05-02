@@ -20,25 +20,26 @@ const add = (req, res, next) => {
     deposit: req.body.deposit,
     email: req.body.email,
     date: req.body.date,
-    sellerId: req.body.sellerId,
-    buyerId: null
+    // sellerId: req.body.sellerId,
+    // buyerId: null,
+    creator: req.userData.userId
   });
-  Trade.findOne({
-    email: contract.email
-  }).then(
-    data => {
-      // contract.buyerId = data.id;
-      console.log(data);
-    }, error => {
-      return res.status(code).send({
-        'status': 'failed',
-        'error': message
-      });
-    });
+  // Trade.findOne({
+  //   email: contract.email
+  // }).then(
+  //   data => {
+  //     // contract.buyerId = data.id;
+  //     console.log(data);
+  //   }, error => {
+  //     return res.status(code).send({
+  //       'status': 'failed',
+  //       'error': message
+  //     });
+  //   });
 
   contract.save().then((result) => {
     res.status(201).json({
-      message: 'contract added successfully',
+      message: 'contract were sent successfully',
       contractId: result.id
     });
   })
