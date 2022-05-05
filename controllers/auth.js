@@ -82,7 +82,7 @@ const login = async (req, res, next) => {
                 });
             res.status(200).json({
                 'accessToken': accessToken,
-                expiresIn: 3600
+                expiresIn: 900
             });
         })
         .catch(err => {
