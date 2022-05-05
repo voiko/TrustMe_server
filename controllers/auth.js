@@ -93,8 +93,6 @@ const login = async (req, res, next) => {
 }
 
 
-
-
 // ** LOGOUT **
 const logout = async (req, res, next) => {
     try {

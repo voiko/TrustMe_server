@@ -1,5 +1,7 @@
 const Trade = require('../models/trades')
 const authenticate = require('../common/auth_middleware') //this virable we will put 
+const User = require('../models/users')
+
 // in the routes that we want to protect for example:
 // router.post(
 //   "",
@@ -15,36 +17,44 @@ const sendError = (res, code, message) => {
 }
 
 const add = (req, res, next) => {
+
   const contract = new Trade({
     description: req.body.description,
-    deposit: req.body.deposit,
-    email: req.body.email,
+    depositSeller: req.body.depositSeller,
+    depositBuyer: req.body.depositBuyer,
+    walletAddressSeller: req.body.walletAddressSeller,
+    walletAddressBuyer: req.body.walletAddressBuyer,
     date: req.body.date,
-    // sellerId: req.body.sellerId,
-    // buyerId: null,
-    creator: req.userData.userId
+    email: req.body.email,
+    creator: req.userData.userId,
+    status: req.body.status
   });
-  // Trade.findOne({
-  //   email: contract.email
-  // }).then(
-  //   data => {
-  //     // contract.buyerId = data.id;
-  //     console.log(data);
-  //   }, error => {
-  //     return res.status(code).send({
-  //       'status': 'failed',
-  //       'error': message
-  //     });
-  //   });
-
-  contract.save().then((result) => {
-    res.status(201).json({
-      message: 'contract were sent successfully',
-      contractId: result.id
-    });
+  const {
+    email
+  } = req.body
+  const user = User.findOne({
+    email: email
+  }).then(user => {
+    if (user) {
+      console.log(user);
+      contract.save().then((result) => {
+        res.status(201).json({
+          message: 'contract was sent to other user.',
+          contractId: result.id,
+          contract: user.id
+        });
+      })
+    } else {
+      return res.status(401).json({
+        message: "User does not exist."
+      })
+    }
+  }, err => {
+    return res.status(401).send({
+      'status': 'failed',
+      'error': 'failed to sent contract'
+    })
   })
-
-  console.log(contract);
 }
 
 const getContract = async (req, res) => {
