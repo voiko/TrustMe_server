@@ -135,23 +135,3 @@ module.exports = {
     getUsers,
     getUserById
 }
-
-
-
-
-
-
-// const accessToken = await jwt.sign({
-//     '_id': user._id
-// },
-// process.env.ACCESS_TOKEN_SECRET, {
-//     expiresIn: process.env.JWT_TOKEN_EXPIRATION
-// }
-// )
-// console.log('A user is logged in.');
-
-// //setTimeout(() => {
-// res.status(200).send({
-// 'accessToken': accessToken
-// })
-// // }, 2000)

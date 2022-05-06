@@ -27,21 +27,23 @@ const add = (req, res, next) => {
     date: req.body.date,
     email: req.body.email,
     creator: req.userData.userId,
-    status: req.body.status
+    status: req.body.status,
+    buyerID: req.body.buyerID,
   });
   const {
     email
   } = req.body
   const user = User.findOne({
-    email: email
+    email: contract.email
   }).then(user => {
     if (user) {
       console.log(user);
+      contract.buyerID = user._id
+      console.log(contract.buyerID);
       contract.save().then((result) => {
         res.status(201).json({
           message: 'contract was sent to other user.',
           contractId: result.id,
-          contract: user.id
         });
       })
     } else {

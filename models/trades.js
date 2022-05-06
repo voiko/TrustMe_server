@@ -40,6 +40,10 @@ const tradeSchema = new mongoose.Schema({
     },
     transactionID: {
         type: String,
+    },
+    buyerID: {
+        type: String,
+        required: true
     }
 })
 
