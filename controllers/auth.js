@@ -82,7 +82,7 @@ const login = async (req, res, next) => {
                 });
             res.status(200).json({
                 'accessToken': accessToken,
-                expiresIn: 3600
+                expiresIn: 900
             });
         })
         .catch(err => {
@@ -91,8 +91,6 @@ const login = async (req, res, next) => {
             });
         });
 }
-
-
 
 
 // ** LOGOUT **
@@ -137,23 +135,3 @@ module.exports = {
     getUsers,
     getUserById
 }
-
-
-
-
-
-
-// const accessToken = await jwt.sign({
-//     '_id': user._id
-// },
-// process.env.ACCESS_TOKEN_SECRET, {
-//     expiresIn: process.env.JWT_TOKEN_EXPIRATION
-// }
-// )
-// console.log('A user is logged in.');
-
-// //setTimeout(() => {
-// res.status(200).send({
-// 'accessToken': accessToken
-// })
-// // }, 2000)

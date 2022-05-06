@@ -5,29 +5,44 @@ const tradeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    deposit: {
+    depositSeller: {
         type: Number,
+        required: true
+    },
+    depositBuyer: {
+        type: Number,
+        required: true
+    },
+    walletAddressSeller: {
+        type: String,
+        required: true
+    },
+    walletAddressBuyer: {
+        type: String,
         required: true
     },
     email: {
         type: String,
-        required: true
+        required: false
     },
     date: {
         type: Date,
         required: true
     },
-    // buyerId: {
-    //     type: String,
-    //     required: false
-    // },
-    // sellerId: {
-    //     type: String,
-    //     required: false
-    // },
     creator: { // who created this transaction
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', // id belong to user who created this transaction
+        required: true
+    },
+    status: { // status of transaction
+        type: String,
+        required: false
+    },
+    transactionID: {
+        type: String,
+    },
+    buyerID: {
+        type: String,
         required: true
     }
 })

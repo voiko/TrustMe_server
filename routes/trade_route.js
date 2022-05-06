@@ -6,5 +6,4 @@ const authenticate = require("../common/auth_middleware")
 router.post('/add', authenticate, Trade.add)
 router.get('/getContracts', authenticate, Trade.getContract)
 
-
 module.exports = router
