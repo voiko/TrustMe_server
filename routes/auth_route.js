@@ -7,5 +7,6 @@ router.post('/signup', Auth.signup)
 router.post('/login', Auth.login)
 router.post('/logout', Auth.logout)
 router.get('/:id', Auth.getUserById)
+router.get('/findUser', Auth.findUser)
 
 module.exports = router

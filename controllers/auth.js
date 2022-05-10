@@ -35,7 +35,6 @@ const signup = async (req, res, next) => {
 
         console.log('User registered and save to database. ');
 
-
         const newUser = await user.save()
             .then(result => {
                 res.status(201).json({
@@ -82,7 +81,8 @@ const login = async (req, res, next) => {
                 });
             res.status(200).json({
                 'accessToken': accessToken,
-                expiresIn: 900
+                expiresIn: 900,
+                userId: fetchedUser._id
             });
         })
         .catch(err => {
@@ -128,10 +128,21 @@ const getUserById = async (req, res, next) => {
     }
 }
 
+const findUser = async (req, res, next) => {
+    User.findOne({
+        email: req.params.email,
+    }).then((user) => {
+        res.status(200).json(user)
+    }).catch((err) => {
+        console.log("faild to find user.");
+    })
+}
+
 module.exports = {
     login,
     signup,
     logout,
     getUsers,
-    getUserById
+    getUserById,
+    findUser
 }
