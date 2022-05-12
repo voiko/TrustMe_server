@@ -17,7 +17,6 @@ const sendError = (res, code, message) => {
 }
 
 const add = (req, res, next) => {
-
   const contract = new Trade({
     description: req.body.description,
     depositSeller: req.body.depositSeller,
@@ -61,6 +60,7 @@ const add = (req, res, next) => {
 
 const getContract = async (req, res) => {
   //Trade.find({$or:[{sellerid:req.user},{buyerid:req.user}]).then(documents => {
+  console.log("getContract")
   Trade.find().then(documents => {
     res.status(200).json({
       message: 'posts fetched successfully',
@@ -69,7 +69,68 @@ const getContract = async (req, res) => {
   });
 }
 
+const getContractByUserId = async (req, res) => {
+  const cretorId = req.userData.userId
+  Trade.find({
+    creator: cretorId
+  }).then(documents => {
+    console.log(documents)
+    res.status(200).json({
+      message: 'posts fetched successfully',
+      contracts: documents
+    });
+  });
+}
+
+const editContract = (req, res, next) => {
+  const contract = new Trade({
+    _id: req.body.id,
+    description: req.body.description,
+    depositSeller: req.body.depositSeller,
+    depositBuyer: req.body.depositBuyer,
+    walletAddressSeller: req.body.walletAddressSeller,
+    walletAddressBuyer: req.body.walletAddressBuyer,
+    date: req.body.date,
+    creator: req.userData.userId
+  });
+  Trade.updateOne({
+      _id: req.params.id,
+      creator: req.userData.userId
+    }, contract)
+    .then(result => {
+      if (result.nModified > 0) {
+        res.status(200).json({
+          message: "Contract updated succesfully."
+        })
+      } else {
+        res.status(401).json({
+          message: "Not authorization!"
+        })
+      }
+    })
+}
+
+const cancelContract = (req, res, next) => {
+  Trade.deleteOne({
+    _id: req.params.id,
+    creator: req.userData.userId
+  }).then(result => {
+    if (result.n > 0) {
+      res.status(200).json({
+        message: "Delete succesfully."
+      })
+    } else {
+      res.status(401).json({
+        message: "Delete not authorization!"
+      })
+    }
+  })
+}
+
 module.exports = {
   add,
-  getContract
+  getContract,
+  getContractByUserId,
+  editContract,
+  cancelContract
 }
