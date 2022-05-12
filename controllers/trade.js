@@ -60,6 +60,7 @@ const add = (req, res, next) => {
 
 const getContract = async (req, res) => {
   //Trade.find({$or:[{sellerid:req.user},{buyerid:req.user}]).then(documents => {
+  console.log("getContract")
   Trade.find().then(documents => {
     res.status(200).json({
       message: 'posts fetched successfully',
@@ -69,9 +70,11 @@ const getContract = async (req, res) => {
 }
 
 const getContractByUserId = async (req, res) => {
-  User.findOne({
-    userID: req.body.userID,
+  const cretorId = req.userData.userId
+  Trade.find({
+    creator: cretorId
   }).then(documents => {
+    console.log(documents)
     res.status(200).json({
       message: 'posts fetched successfully',
       contracts: documents
