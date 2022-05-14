@@ -9,7 +9,7 @@ const sendError = (res, code, message) => {
     })
 }
 
-// ** SignUp **
+//---------------------- Signup //----------------------
 const signup = async (req, res, next) => {
     const password = req.body.password
 
@@ -51,7 +51,7 @@ const signup = async (req, res, next) => {
     }
 }
 
-// ** LOGIN **
+//---------------------- Login //----------------------
 const login = async (req, res, next) => {
     let fetchedUser;
     User.findOne({
@@ -93,7 +93,7 @@ const login = async (req, res, next) => {
 }
 
 
-// ** LOGOUT **
+//---------------------- Logout //----------------------
 const logout = async (req, res, next) => {
     try {
         res.cookie('jwt', 'logout', {
@@ -108,6 +108,8 @@ const logout = async (req, res, next) => {
     }
 }
 
+//---------------------- Get all users //----------------------
+
 const getUsers = async (req, res, next) => {
     try {
         users = await User.find()
@@ -117,6 +119,7 @@ const getUsers = async (req, res, next) => {
         sendError(res, 400, err.message)
     }
 }
+//---------------------- Get user by user ID  //----------------------
 
 const getUserById = async (req, res, next) => {
     try {
@@ -127,6 +130,7 @@ const getUserById = async (req, res, next) => {
         sendError(res, 400, err.message)
     }
 }
+//---------------------- find user by email //----------------------
 
 const findUser = async (req, res, next) => {
     User.findOne({
