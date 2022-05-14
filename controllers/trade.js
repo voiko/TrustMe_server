@@ -2,19 +2,13 @@ const Trade = require('../models/trades')
 const authenticate = require('../common/auth_middleware') //this virable we will put 
 const User = require('../models/users')
 
-// in the routes that we want to protect for example:
-// router.post(
-//   "",
-//   checkAuth, *** add it as a extra argument >> and now only if authenticated this routes will work
-//   multer({ storage: storage }).single("image") 
-// 
-
 const sendError = (res, code, message) => {
   return res.status(code).send({
     'status': 'failed',
     'error': message
   })
 }
+//---------------------- Add new contracts //----------------------
 
 const add = (req, res, next) => {
   const contract = new Trade({
@@ -58,29 +52,67 @@ const add = (req, res, next) => {
   })
 }
 
+//---------------------- Get all contracts //----------------------
+
 const getContract = async (req, res) => {
-  //Trade.find({$or:[{sellerid:req.user},{buyerid:req.user}]).then(documents => {
   console.log("getContract")
   Trade.find().then(documents => {
     res.status(200).json({
-      message: 'posts fetched successfully',
+      message: 'contracts fetched successfully',
       contracts: documents
     });
   });
 }
 
-const getContractByUserId = async (req, res) => {
-  const cretorId = req.userData.userId
+//---------------------- New contracts //----------------------
+
+const getNewContractByUserId = async (req, res) => {
+  const creatorId = req.userData.userId
   Trade.find({
-    creator: cretorId
+    $or: [{
+      creator: creatorId
+    }]
   }).then(documents => {
-    console.log(documents)
-    res.status(200).json({
-      message: 'posts fetched successfully',
-      contracts: documents
+    console.log(creatorId);
+    console.log(documents[0].buyerID);
+    if (documents[0].buyerID != creatorId) { // buyer id and seller id
+      res.status(200).json({
+        message: 'contracts fetched successfully and send to both side',
+        contracts: documents
+      });
+    }
+  }, err => {
+    res.status(401).json({
+      message: 'falid to fetch contract!',
     });
   });
 }
+//---------------------- History contracts //----------------------
+
+const getHistoryByUserId = async (req, res) => {
+  const creatorId = req.userData.userId
+  Trade.find({
+    $or: [{
+      creator: creatorId
+    }]
+  }).then(
+    documents => {
+      console.log(creatorId);
+      console.log(documents[0].buyerID);
+      if (documents[0].buyerID != creatorId) { // buyer id and seller id
+        res.status(200).json({
+          message: 'contracts fetched successfully and send to both side',
+          contracts: documents
+        });
+      }
+    }, err => {
+      res.status(401).json({
+        message: 'falid to fetch contract!',
+      });
+    });
+}
+
+//---------------------- Edit contracts //----------------------
 
 const editContract = (req, res, next) => {
   const contract = new Trade({
@@ -110,6 +142,8 @@ const editContract = (req, res, next) => {
     })
 }
 
+//---------------------- Cancel contracts //----------------------
+
 const cancelContract = (req, res, next) => {
   Trade.deleteOne({
     _id: req.params.id,
@@ -130,7 +164,8 @@ const cancelContract = (req, res, next) => {
 module.exports = {
   add,
   getContract,
-  getContractByUserId,
+  getNewContractByUserId,
+  getHistoryByUserId,
   editContract,
   cancelContract
 }
