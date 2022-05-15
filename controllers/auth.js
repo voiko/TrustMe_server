@@ -125,7 +125,7 @@ const getUserById = async (req, res, next) => {
     try {
         user = await User.findById(req.params.id)
         res.status(200).send(user)
-
+        console.log(user + "getUserById");
     } catch (err) {
         sendError(res, 400, err.message)
     }
@@ -142,11 +142,22 @@ const findUser = async (req, res, next) => {
     })
 }
 
+// const getDetailsByUserId = async (req, res, next) => {
+//     try {
+//         user = await User.findById(req.params.id)
+//         res.status(200).send(user)
+//         console.log(user + "getUserById");
+//     } catch (err) {
+//         sendError(res, 400, err.message)
+//     }
+// }
+
 module.exports = {
     login,
     signup,
     logout,
     getUsers,
     getUserById,
-    findUser
+    findUser,
+    // getDetailsByUserId
 }
