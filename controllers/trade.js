@@ -161,11 +161,13 @@ const cancelContract = (req, res, next) => {
   })
 }
 
+
+
 module.exports = {
   add,
   getContract,
   getNewContractByUserId,
   getHistoryByUserId,
   editContract,
-  cancelContract
+  cancelContract,
 }
