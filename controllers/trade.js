@@ -73,8 +73,8 @@ const getNewContractByUserId = async (req, res) => {
       creator: creatorId
     }]
   }).then(documents => {
-    console.log(creatorId);
-    console.log(documents[0].buyerID);
+    // console.log(creatorId);
+    // console.log(documents[0].buyerID);
     if (documents[0].buyerID != creatorId) { // buyer id and seller id
       res.status(200).json({
         message: 'contracts fetched successfully and send to both side',
@@ -97,8 +97,8 @@ const getHistoryByUserId = async (req, res) => {
     }]
   }).then(
     documents => {
-      console.log(creatorId);
-      console.log(documents[0].buyerID);
+      // console.log(creatorId);
+      // console.log(documents[0].buyerID);
       if (documents[0].buyerID != creatorId) { // buyer id and seller id
         res.status(200).json({
           message: 'contracts fetched successfully and send to both side',
@@ -160,8 +160,6 @@ const cancelContract = (req, res, next) => {
     }
   })
 }
-
-
 
 module.exports = {
   add,
