@@ -32,12 +32,11 @@ const add = (req, res, next) => {
     if (user) {
       console.log(user);
       contract.buyerID = user._id
-      // console.log(contract.buyerID);
+      console.log(contract.buyerID);
       contract.save().then((result) => {
-        console.log(result);
         res.status(201).json({
           message: 'contract was sent to other user.',
-          contractId: result,
+          contractId: result.id,
         });
       })
     } else {
@@ -69,23 +68,19 @@ const getContract = async (req, res) => {
 
 const getNewContractByUserId = async (req, res) => {
   const creatorId = req.userData.userId
-
   Trade.find({
     $or: [{
       creator: creatorId
     }]
   }).then(documents => {
-
+    console.log(creatorId);
+    console.log(documents[0].buyerID);
     if (documents[0].buyerID != creatorId) { // buyer id and seller id
-      if (documents) {
-        // console.log(documents[0].buyerID);
-        res.status(200).json({
-          message: 'contracts fetched successfully and send to both side',
-          contracts: documents
-        });
-      }
+      res.status(200).json({
+        message: 'contracts fetched successfully and send to both side',
+        contracts: documents
+      });
     }
-
   }, err => {
     res.status(401).json({
       message: 'falid to fetch contract!',
@@ -94,30 +89,22 @@ const getNewContractByUserId = async (req, res) => {
 }
 //---------------------- History contracts //----------------------
 
-const getHistoryByUserId = async (req, res, next) => {
+const getHistoryByUserId = async (req, res) => {
   const creatorId = req.userData.userId
-
   Trade.find({
-    $and: [{
+    $or: [{
       creator: creatorId
-    }, {
-      buyerID: contract.buyerID
     }]
   }).then(
     documents => {
-      // console.log(creatorId);
-      // console.log(documents[0].buyerID);
+      console.log(creatorId);
+      console.log(documents[0].buyerID);
       if (documents[0].buyerID != creatorId) { // buyer id and seller id
         res.status(200).json({
           message: 'contracts fetched successfully and send to both side',
           contracts: documents
         });
       }
-      console.log(documents);
-      res.status(200).json({
-        message: 'contracts fetched successfully and send to both side',
-        contracts: documents
-      });
     }, err => {
       res.status(401).json({
         message: 'falid to fetch contract!',
@@ -180,5 +167,5 @@ module.exports = {
   getNewContractByUserId,
   getHistoryByUserId,
   editContract,
-  cancelContract,
+  cancelContract
 }
