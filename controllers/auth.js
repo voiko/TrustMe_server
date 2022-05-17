@@ -141,19 +141,21 @@ const findUser = async (req, res, next) => {
         console.log("faild to find user.");
     })
 }
+
 //---------------------- get details by email //----------------------
-const getUserDetailsByUserId = async (req, res) => {
+
+const getUserDetailsByUserId = async (req, res, next) => {
     User.findOne({
         _id: req.body.userId,
     }).then((user) => {
-        res.status(200).json({ 
-        message: 'contracts fetched successfully and send to both side',
-        userDetails: user
-    });
+        res.status(200).json({
+            message: 'user found',
+            userDetails: user
+        });
     }).catch((err) => {
         console.log("faild to find user.");
     })
-  }
+}
 
 
 module.exports = {
