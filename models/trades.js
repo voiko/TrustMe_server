@@ -44,6 +44,10 @@ const tradeSchema = new mongoose.Schema({
     buyerID: {
         type: String,
         required: true
+    },
+    status: {
+        type: String,
+        required: true
     }
 })
 
