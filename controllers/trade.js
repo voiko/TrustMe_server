@@ -22,6 +22,7 @@ const add = (req, res, next) => {
     creator: req.userData.userId,
     status: req.body.status,
     buyerID: req.body.buyerID,
+    status: "Active"
   });
   const {
     email
@@ -30,9 +31,7 @@ const add = (req, res, next) => {
     email: contract.email
   }).then(user => {
     if (user) {
-      console.log(user);
       contract.buyerID = user._id
-      console.log(contract.buyerID);
       contract.save().then((result) => {
         res.status(201).json({
           message: 'contract was sent to other user.',
@@ -55,8 +54,16 @@ const add = (req, res, next) => {
 //---------------------- Get all contracts //----------------------
 
 const getContract = async (req, res) => {
-  console.log("getContract")
-  Trade.find().then(documents => {
+  const creatorId = req.userData.userId
+
+  Trade.find({
+    $or: [{
+      creator: creatorId
+    }, {
+      buyerID: creatorId
+    }]
+  }).then(documents => {
+    console.log(documents + "getContract");
     res.status(200).json({
       message: 'contracts fetched successfully',
       contracts: documents
@@ -69,18 +76,17 @@ const getContract = async (req, res) => {
 const getNewContractByUserId = async (req, res) => {
   const creatorId = req.userData.userId
   Trade.find({
+    status: "Active",
     $or: [{
       creator: creatorId
+    }, {
+      buyerID: creatorId
     }]
   }).then(documents => {
-    console.log(creatorId);
-    console.log(documents[0].buyerID);
-    if (documents[0].buyerID != creatorId) { // buyer id and seller id
-      res.status(200).json({
-        message: 'contracts fetched successfully and send to both side',
-        contracts: documents
-      });
-    }
+    res.status(200).json({
+      message: 'contracts fetched successfully and send to both side',
+      contracts: documents
+    });
   }, err => {
     res.status(401).json({
       message: 'falid to fetch contract!',
@@ -91,20 +97,21 @@ const getNewContractByUserId = async (req, res) => {
 
 const getHistoryByUserId = async (req, res) => {
   const creatorId = req.userData.userId
+
   Trade.find({
+    status: "Close",
     $or: [{
       creator: creatorId
+    }, {
+      buyerID: creatorId
     }]
   }).then(
     documents => {
-      console.log(creatorId);
-      console.log(documents[0].buyerID);
-      if (documents[0].buyerID != creatorId) { // buyer id and seller id
-        res.status(200).json({
-          message: 'contracts fetched successfully and send to both side',
-          contracts: documents
-        });
-      }
+      res.status(200).json({
+        message: 'contracts fetched successfully and send to both side',
+        contracts: documents
+      });
+
     }, err => {
       res.status(401).json({
         message: 'falid to fetch contract!',
