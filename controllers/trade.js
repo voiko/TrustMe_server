@@ -75,18 +75,15 @@ const getNewContractByUserId = async (req, res) => {
       creator: creatorId
     }]
   }).then(documents => {
-<<<<<<< HEAD
-    // console.log(creatorId);
-    // console.log(documents[0].buyerID);
+
     if (documents[0].buyerID != creatorId) { // buyer id and seller id
-=======
-    if (documents) {
-      // console.log(documents[0].buyerID);
->>>>>>> a44ed2fe7b47220189bd69c023d8ff558ebef5ae
-      res.status(200).json({
-        message: 'contracts fetched successfully and send to both side',
-        contracts: documents
-      });
+      if (documents) {
+        // console.log(documents[0].buyerID);
+        res.status(200).json({
+          message: 'contracts fetched successfully and send to both side',
+          contracts: documents
+        });
+      }
     }
 
   }, err => {
@@ -108,7 +105,6 @@ const getHistoryByUserId = async (req, res, next) => {
     }]
   }).then(
     documents => {
-<<<<<<< HEAD
       // console.log(creatorId);
       // console.log(documents[0].buyerID);
       if (documents[0].buyerID != creatorId) { // buyer id and seller id
@@ -117,13 +113,11 @@ const getHistoryByUserId = async (req, res, next) => {
           contracts: documents
         });
       }
-=======
       console.log(documents);
       res.status(200).json({
         message: 'contracts fetched successfully and send to both side',
         contracts: documents
       });
->>>>>>> a44ed2fe7b47220189bd69c023d8ff558ebef5ae
     }, err => {
       res.status(401).json({
         message: 'falid to fetch contract!',
