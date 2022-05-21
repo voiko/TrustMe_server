@@ -48,6 +48,17 @@ const tradeSchema = new mongoose.Schema({
     status: {
         type: String,
         required: true
+    },
+    tradeAddress: {
+        type: String,
+    },
+    buyerPay: {
+        type: Boolean,
+        required: true
+    },
+    sellerPay: {
+        type: Boolean,
+        required: true
     }
 })
 

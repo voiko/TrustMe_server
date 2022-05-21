@@ -22,7 +22,10 @@ const add = (req, res, next) => {
     creator: req.userData.userId,
     status: req.body.status,
     buyerID: req.body.buyerID,
-    status: "Active"
+    status: "Created",
+    tradeAddress: req.body.tradeAddress,
+    buyerPay: req.body.buyerPay,
+    sellerPay: req.body.sellerPay
   });
   const {
     email
@@ -75,8 +78,9 @@ const getContract = async (req, res) => {
 
 const getNewContractByUserId = async (req, res) => {
   const creatorId = req.userData.userId
+  
   Trade.find({
-    status: "Active",
+    status: "Created",
     $or: [{
       creator: creatorId
     }, {
