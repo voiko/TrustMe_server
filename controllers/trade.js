@@ -99,7 +99,7 @@ const getHistoryByUserId = async (req, res) => {
   const creatorId = req.userData.userId
 
   Trade.find({
-    status: "Close" ,
+    status: "Close",
     $or: [{
       creator: creatorId
     }, {
