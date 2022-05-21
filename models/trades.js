@@ -45,8 +45,30 @@ const tradeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    status: { // status of transaction
+        type: String,
+        required: false
+    },
+    transactionID: {
+        type: String,
+    },
+    buyerID: {
+        type: String,
+        required: true
+    },
     status: {
         type: String,
+        required: true
+    },
+    tradeAddress: {
+        type: String,
+    },
+    buyerPay: {
+        type: Boolean,
+        required: true
+    },
+    sellerPay: {
+        type: Boolean,
         required: true
     }
 })

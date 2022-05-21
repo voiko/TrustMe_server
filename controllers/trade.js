@@ -22,7 +22,10 @@ const add = (req, res, next) => {
     creator: req.userData.userId,
     status: req.body.status,
     buyerID: req.body.buyerID,
-    status: "Active"
+    status: "Created",
+    tradeAddress: req.body.tradeAddress,
+    buyerPay: req.body.buyerPay,
+    sellerPay: req.body.sellerPay
   });
   const {
     email
@@ -56,14 +59,13 @@ const add = (req, res, next) => {
 const getContract = async (req, res) => {
   const creatorId = req.userData.userId
 
-  Trade.find({
+  const trade = await Trade.find({
     $or: [{
       creator: creatorId
     }, {
       buyerID: creatorId
     }]
   }).then(documents => {
-    console.log(documents + "getContract");
     res.status(200).json({
       message: 'contracts fetched successfully',
       contracts: documents
@@ -73,18 +75,25 @@ const getContract = async (req, res) => {
 
 //---------------------- New contracts //----------------------
 
-const getNewContractByUserId = async (req, res) => {
+const getNewContractByUserId = async (req, res, next) => {
   const creatorId = req.userData.userId
   Trade.find({
-    status: "Active",
-    $or: [{
-      creator: creatorId
-    }, {
-      buyerID: creatorId
-    }]
+    $and: [{
+        $or: [{
+            creator: creatorId
+          },
+          {
+            buyerID: creatorId
+          },
+        ]
+      },
+      {
+        status: "Created",
+      }
+    ]
   }).then(documents => {
     res.status(200).json({
-      message: 'contracts fetched successfully and send to both side',
+      message: 'New transction has been made successfully',
       contracts: documents
     });
   }, err => {
@@ -95,20 +104,26 @@ const getNewContractByUserId = async (req, res) => {
 }
 //---------------------- History contracts //----------------------
 
-const getHistoryByUserId = async (req, res) => {
+const getHistoryByUserId = async (req, res, next) => {
   const creatorId = req.userData.userId
-
   Trade.find({
-    status: "Close",
-    $or: [{
-      creator: creatorId
-    }, {
-      buyerID: creatorId
-    }]
+    $and: [{
+        $or: [{
+            creator: creatorId
+          },
+          {
+            buyerID: creatorId
+          },
+        ]
+      },
+      {
+        status: "Close",
+      }
+    ]
   }).then(
     documents => {
       res.status(200).json({
-        message: 'contracts fetched successfully and send to both side',
+        message: 'Transction transferred to History',
         contracts: documents
       });
 
