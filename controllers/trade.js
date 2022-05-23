@@ -39,6 +39,7 @@ const add = (req, res, next) => {
         res.status(201).json({
           message: 'contract was sent to other user.',
           contractId: result.id,
+          buyerId: user._id
         });
       })
     } else {
@@ -172,11 +173,102 @@ const cancelContract = (req, res, next) => {
   })
 }
 
+//---------------------- History contracts by email //----------------------
+
+const getHistoryByEmail = async (req, res) => {
+  const creatorId = req.userData.userId
+  console.log(req.body.partner)
+
+  const user = await User.findOne({
+    email: req.body.partner
+  }).then(user => {
+    if (user) {
+       console.log(user._id.valueOf())
+       return user;
+    }
+  }, err => {
+    res.status(401).json({
+      message: 'falid to fetch contract!',
+    });
+  });
+
+  console.log(user)
+
+  Trade.find({
+    status: "Close",
+    $or: [{
+      creator: user.id.valueOf()
+    }, {
+      buyerID: user.id.valueOf()
+    }]
+  }).then(
+    documents => {
+      console.log(documents)
+      res.status(200).json({
+        message: 'contracts fetched successfully and send to both side',
+        contracts: documents
+      });
+
+    }, err => {
+      res.status(401).json({
+        message: 'falid to fetch contract!',
+      });
+    });
+}
+
+
+//---------------------- New contracts by email //----------------------
+
+const getNewContractByEmail = async (req, res) => {
+  const creatorId = req.userData.userId
+  console.log(req.body.partner)
+
+  const user = await User.findOne({
+    email: req.body.partner
+  }).then(user => {
+    if (user) {
+       console.log(user._id.valueOf())
+       return user;
+    }
+  }, err => {
+    res.status(401).json({
+      message: 'falid to fetch contract!',
+    });
+  });
+
+  console.log(user)
+
+  Trade.find({
+    status: "Created",
+    $or: [{
+      creator: user.id.valueOf()
+    }, {
+      buyerID: user.id.valueOf()
+    }]
+  }).then(
+    documents => {
+      console.log(documents)
+      res.status(200).json({
+        message: 'contracts fetched successfully and send to both side',
+        contracts: documents
+      });
+
+    }, err => {
+      res.status(401).json({
+        message: 'falid to fetch contract!',
+      });
+    });
+}
+
+
+
 module.exports = {
   add,
   getContract,
   getNewContractByUserId,
   getHistoryByUserId,
   editContract,
-  cancelContract
+  cancelContract,
+  getHistoryByEmail,
+  getNewContractByEmail
 }
