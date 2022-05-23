@@ -9,5 +9,6 @@ router.post('/logout', Auth.logout)
 router.get('/:id', Auth.getUserById)
 router.get('/findUser', Auth.findUser)
 router.post('/getUserDetailsByUserId', Auth.getUserDetailsByUserId)
+router.post('/getUserDetailsByEmail', Auth.getUserDetailsByEmail)
 
 module.exports = router
