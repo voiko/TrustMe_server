@@ -22,7 +22,7 @@ const add = (req, res, next) => {
     creator: req.userData.userId,
     status: req.body.status,
     buyerID: req.body.buyerID,
-    status: "Created",
+    status: "Waiting",
     tradeAddress: req.body.tradeAddress,
     buyerPay: req.body.buyerPay,
     sellerPay: req.body.sellerPay
@@ -78,7 +78,7 @@ const getContract = async (req, res) => {
 
 const getNewContractByUserId = async (req, res, next) => {
   const creatorId = req.userData.userId
-  
+
   Trade.find({
     $and: [{
         $or: [{
@@ -119,7 +119,7 @@ const getHistoryByUserId = async (req, res, next) => {
         ]
       },
       {
-        status: "Close",
+        status: "Closed",
       }
     ]
   }).then(
@@ -195,8 +195,8 @@ const getHistoryByEmail = async (req, res) => {
     email: req.body.partner
   }).then(user => {
     if (user) {
-       console.log(user._id.valueOf())
-       return user;
+      console.log(user._id.valueOf())
+      return user;
     }
   }, err => {
     res.status(401).json({
@@ -239,8 +239,8 @@ const getNewContractByEmail = async (req, res) => {
     email: req.body.partner
   }).then(user => {
     if (user) {
-       console.log(user._id.valueOf())
-       return user;
+      console.log(user._id.valueOf())
+      return user;
     }
   }, err => {
     res.status(401).json({

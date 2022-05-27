@@ -34,11 +34,17 @@ router.get('/', (req, res, next) => {
                     title: 'Safe trade with your smart phone',
                     cols: 2,
                     rows: 1
+                },
+                {
+                    imageName: 'hand_similar',
+                    title: 'Safe trade with your smart phone',
+                    cols: 2,
+                    rows: 1
                 }
             ],
             "webCards": [{ // for bigger screen settings
                     imageName: 'blockchain',
-                    title: 'Blockchain-based smart contract',
+                    title: 'Online Security',
                     cols: 1,
                     rows: 1
                 },
@@ -64,6 +70,12 @@ router.get('/', (req, res, next) => {
                 {
                     imageName: 'bitcoin2',
                     title: 'Safe trade with your smart phone',
+                    cols: 1,
+                    rows: 1
+                },
+                {
+                    imageName: 'hand_similar',
+                    title: 'Online Security',
                     cols: 1,
                     rows: 1
                 }
