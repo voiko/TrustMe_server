@@ -34,10 +34,6 @@ const tradeSchema = new mongoose.Schema({
         ref: 'User', // id belong to user who created this transaction
         required: true
     },
-    status: { // status of transaction
-        type: String,
-        required: false
-    },
     transactionID: {
         type: String,
     },
@@ -48,17 +44,6 @@ const tradeSchema = new mongoose.Schema({
     status: { // status of transaction
         type: String,
         required: false
-    },
-    transactionID: {
-        type: String,
-    },
-    buyerID: {
-        type: String,
-        required: true
-    },
-    status: {
-        type: String,
-        required: true
     },
     tradeAddress: {
         type: String,
