@@ -29,6 +29,9 @@ app.use('/api/users', authRouter)
 const tradeRouter = require('./routes/trade_route');
 app.use('/api/contracts', tradeRouter);
 
+const recommendationRouter = require('./routes/recommendation_route');
+app.use('/api/recommendation', recommendationRouter);
+
 
 const homeRouter = require('./routes/home_route')
 app.use('/home', homeRouter)

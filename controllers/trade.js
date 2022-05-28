@@ -22,7 +22,7 @@ const add = (req, res, next) => {
     creator: req.userData.userId,
     status: req.body.status,
     buyerID: req.body.buyerID,
-    status: "Created",
+    status: "Waiting",
     tradeAddress: req.body.tradeAddress,
     buyerPay: req.body.buyerPay,
     sellerPay: req.body.sellerPay
@@ -90,7 +90,7 @@ const getNewContractByUserId = async (req, res, next) => {
         ]
       },
       {
-        status: "Created",
+        status: "Waiting",
       }
     ]
   }).then(documents => {
@@ -189,13 +189,11 @@ const cancelContract = (req, res, next) => {
 
 const getHistoryByEmail = async (req, res) => {
   const creatorId = req.userData.userId
-  console.log(req.body.partner)
 
   const user = await User.findOne({
     email: req.body.partner
   }).then(user => {
     if (user) {
-       console.log(user._id.valueOf())
        return user;
     }
   }, err => {
@@ -204,7 +202,6 @@ const getHistoryByEmail = async (req, res) => {
     });
   });
 
-  console.log(user)
 
   Trade.find({
     status: "Close",
@@ -215,7 +212,6 @@ const getHistoryByEmail = async (req, res) => {
     }]
   }).then(
     documents => {
-      console.log(documents)
       res.status(200).json({
         message: 'contracts fetched successfully and send to both side',
         contracts: documents
@@ -233,13 +229,11 @@ const getHistoryByEmail = async (req, res) => {
 
 const getNewContractByEmail = async (req, res) => {
   const creatorId = req.userData.userId
-  console.log(req.body.partner)
 
   const user = await User.findOne({
     email: req.body.partner
   }).then(user => {
     if (user) {
-       console.log(user._id.valueOf())
        return user;
     }
   }, err => {
@@ -248,10 +242,8 @@ const getNewContractByEmail = async (req, res) => {
     });
   });
 
-  console.log(user)
-
   Trade.find({
-    status: "Created",
+    status: "Waiting",
     $or: [{
       creator: user.id.valueOf()
     }, {
@@ -259,7 +251,6 @@ const getNewContractByEmail = async (req, res) => {
     }]
   }).then(
     documents => {
-      console.log(documents)
       res.status(200).json({
         message: 'contracts fetched successfully and send to both side',
         contracts: documents

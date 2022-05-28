@@ -9,7 +9,11 @@ const recommendationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    messageText: { // status of transaction
+    content: { 
+        type: String,
+        required: true
+    },
+    senderName:{
         type: String,
         required: true
     }
