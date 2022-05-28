@@ -272,7 +272,27 @@ const getNewContractByEmail = async (req, res) => {
     });
 }
 
-
+const updateContract = async (req, res, next) => {
+  // const TradeId = mongoose.Types.ObjectId(_id)
+  console.log(req.body);
+  console.log(req.body.id);
+  Trade.updateOne({
+    _id: req.body.id
+  }, {
+    $set: {
+      status: "Created"
+    }
+  }).then(data => {
+    console.log(data);
+    res.status(200).json({
+      message: "Status has been changed!"
+    })
+  }, err => {
+    res.status(401).json({
+      message: 'Falid to updated status',
+    });
+  })
+}
 
 module.exports = {
   add,
@@ -282,5 +302,6 @@ module.exports = {
   editContract,
   cancelContract,
   getHistoryByEmail,
-  getNewContractByEmail
+  getNewContractByEmail,
+  updateContract
 }
