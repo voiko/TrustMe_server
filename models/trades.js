@@ -45,10 +45,6 @@ const tradeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    status: { // status of transaction
-        type: String,
-        required: false
-    },
     transactionID: {
         type: String,
     },
