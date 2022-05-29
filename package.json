@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@truffle/hdwallet-provider": "^2.0.8",
     "@types/bcrypt": "^5.0.0",
     "@types/body-parser": "^1.19.2",
     "@types/dotenv": "^8.2.0",
@@ -18,13 +19,15 @@
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
+    "ejs": "^3.1.8",
     "express": "^4.17.3",
     "express-jwt": "^6.1.1",
     "express-validator": "^6.14.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.10",
     "mongoose-date-format": "^1.2.0",
-    "mongoose-unique-validator": "^3.0.0"
+    "mongoose-unique-validator": "^3.0.0",
+    "truffle": "^5.5.16"
   },
   "devDependencies": {
     "@types/nodemon": "^1.19.1",
