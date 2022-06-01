@@ -92,13 +92,13 @@ App = {
       trade_index = await postTransaction();
       console.log("********************************************");
       console.log(trade_index)
-     
+      trade_index = 0;
       //-------------------------------------------------
 
       App.contracts.EscrowManager.deployed().then(function (instance) {
         EscrowManagerInstance = instance;
 
-        return EscrowManagerInstance.createTrade(trade_index, walletAddressSeller, walletAddressBuyer,
+        return EscrowManagerInstance.createTrade( walletAddressSeller, walletAddressBuyer,
           depositSeller, depositBuyer, expired_time, { from: account });
       }).then(function (result) {
         console.log(result.logs[0].args);
