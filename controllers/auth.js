@@ -82,7 +82,8 @@ const login = async (req, res, next) => {
             res.status(200).json({
                 'accessToken': accessToken,
                 expiresIn: 900,
-                userId: fetchedUser._id
+                userId: fetchedUser._id,
+                email: fetchedUser.email
             });
         })
         .catch(err => {
@@ -160,7 +161,7 @@ const getUserDetailsByUserId = async (req, res, next) => {
 //---------------------- get details by email //----------------------
 
 const getUserDetailsByEmail = async (req, res, next) => {
-   
+
     User.findOne({
         email: req.body.partner,
     }).then((user) => {

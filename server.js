@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(bodyParser.json())
 
-app.set('view engine','ejs');
+app.set('view engine', 'ejs');
 
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname + "/public"));
@@ -31,14 +31,19 @@ app.use('/api/users', authRouter)
 const tradeRouter = require('./routes/trade_route');
 app.use('/api/contracts', tradeRouter);
 
-app.post('/escrow',(req,res)=>{
-  
+const recommendationRouter = require('./routes/recommendation_route');
+app.use('/api/recommendation', recommendationRouter);
+
+app.post('/escrow', (req, res) => {
+
     //res.send('sadflasdlfsadf');
     const payload = req.body;
     console.log(payload);
 
-    
-   res.render('escrow',{details:payload});
+
+    res.render('escrow', {
+        details: payload
+    });
 
 })
 

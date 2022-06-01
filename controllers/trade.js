@@ -189,8 +189,6 @@ const cancelContract = (req, res, next) => {
 
 const getHistoryByEmail = async (req, res) => {
   const creatorId = req.userData.userId
-  console.log(req.body.partner)
-
   const user = await User.findOne({
     email: req.body.partner
   }).then(user => {
@@ -204,8 +202,6 @@ const getHistoryByEmail = async (req, res) => {
     });
   });
 
-  console.log(user)
-
   Trade.find({
     status: "Close",
     $or: [{
@@ -215,7 +211,6 @@ const getHistoryByEmail = async (req, res) => {
     }]
   }).then(
     documents => {
-      console.log(documents)
       res.status(200).json({
         message: 'contracts fetched successfully and send to both side',
         contracts: documents
@@ -233,7 +228,6 @@ const getHistoryByEmail = async (req, res) => {
 
 const getNewContractByEmail = async (req, res) => {
   const creatorId = req.userData.userId
-  console.log(req.body.partner)
 
   const user = await User.findOne({
     email: req.body.partner
@@ -248,8 +242,6 @@ const getNewContractByEmail = async (req, res) => {
     });
   });
 
-  console.log(user)
-
   Trade.find({
     status: "Created",
     $or: [{
@@ -259,7 +251,6 @@ const getNewContractByEmail = async (req, res) => {
     }]
   }).then(
     documents => {
-      console.log(documents)
       res.status(200).json({
         message: 'contracts fetched successfully and send to both side',
         contracts: documents
@@ -273,9 +264,6 @@ const getNewContractByEmail = async (req, res) => {
 }
 
 const updateContract = async (req, res, next) => {
-  // const TradeId = mongoose.Types.ObjectId(_id)
-  console.log(req.body);
-  console.log(req.body.id);
   Trade.updateOne({
     _id: req.body.id
   }, {
@@ -283,7 +271,6 @@ const updateContract = async (req, res, next) => {
       status: "Created"
     }
   }).then(data => {
-    console.log(data);
     res.status(200).json({
       message: "Status has been changed!"
     })
