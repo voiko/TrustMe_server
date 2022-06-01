@@ -3,8 +3,9 @@ $(function () {
     App.init();
   });
 });
-
+var trade_index = 0;
 App = {
+  // trade_index: 0,
   params: null,
   web3Provider: null,
   contracts: {},
@@ -19,6 +20,7 @@ App = {
     console.log(email);
     console.log(token);
     console.log(date);
+   
 
     return await App.initWeb3();
   },
@@ -76,19 +78,21 @@ App = {
   
 
     var expired_time = convetDateToTimStamp(date);
-    var trade_index = 0;
-    var status = "waiting;";
+    
 
     var EscrowManagerInstance;
 
-    web3.eth.getAccounts(function (error, accounts) {
+    web3.eth.getAccounts(async function (error, accounts) {
       if (error) {
         console.log(error);
       }
 
       var account = accounts[0];
-      //----Post trade details to backend-----   test     -----------
-      // postTransaction()
+      //----Post trade details to backend----------------
+      trade_index = await postTransaction();
+      console.log("********************************************");
+      console.log(trade_index)
+     
       //-------------------------------------------------
 
       App.contracts.EscrowManager.deployed().then(function (instance) {
@@ -128,6 +132,7 @@ App = {
       }).catch(function (err) {
         console.log(err.message);
       });
+
     });
   },
 
@@ -183,23 +188,18 @@ function convetDateToTimStamp(date) {
 }
 
 async function postTransaction() {
-  var description = App.params.description;
-  var depositSeller = App.params.depositSeller;
-  var depositBuyer = App.params.depositBuyer;
-  var walletAddressSeller = App.params.walletAddressSeller;
-  var walletAddressBuyer = App.params.walletAddressBuyer;
-  var date = App.params.date;
-  var email = App.params.email;
-  var creator = "626ed80d799270f5d99bbd05"
-  var buyerID = "null"
-  console.log("in the function - " + description + "-" + depositSeller + "-" + email + "-" + date);
-  var status = "waiting;";
+  var status = 'waiting';
+  var creator = '';
+  console.log('Transaction...')
+  var buyerID = ''
+  var buyerPay = false;
+  var sellerPay = false;
 
   const result = await fetch('http://localhost:3000/api/contracts/add', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imltb3JrcmF2aXR6QGdtYWlsLmNvbSIsInVzZXJJZCI6IjYyNmVkODBkNzk5MjcwZjVkOTliYmQwNSIsImlhdCI6MTY1MzQ5NzA0MiwiZXhwIjoxNjUzNDk3OTQyfQ.vImRRffRvu9vypHAK71vDEYIRWvvevClOoj0XWLYOY4'
+      authorization: token
     },
     body: JSON.stringify({
       description,
@@ -211,60 +211,20 @@ async function postTransaction() {
       email,
       creator,
       status,
-      buyerID
+      buyerID,
+      buyerPay,
+      sellerPay
     })
   }).then((res) => res.json())
   if (result.error) {
     alert(result.error);
   } else if (result.status == 'ok') {
-    alert("succses!")
+    alert(result.contractId);
   }
+  trade_index = result.contractId
+  console.log(trade_index)
 
-
-  async function insert(event) {
-
-    // event.preventDefault()
-    var description = App.params.description;
-    var depositSeller = App.params.depositSeller;
-    var depositBuyer = App.params.depositBuyer;
-    var walletAddressSeller = App.params.walletAddressSeller;
-    var walletAddressBuyer = App.params.walletAddressBuyer;
-    var date = App.params.date;
-    var email = App.params.email;
-    var creator = "626ed80d799270f5d99bbd05"
-    var buyerID = "null"
-    var authorization = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imltb3JrcmF2aXR6QGdtYWlsLmNvbSIsInVzZXJJZCI6IjYyNmVkODBkNzk5MjcwZjVkOTliYmQwNSIsImlhdCI6MTY1MzQ5NTk0NSwiZXhwIjoxNjUzNDk2ODQ1fQ.tkttyMn0Kwpi_n8Wg_C1ip62VswZ9cvU1WdsmTr6XRw"
-
-    // const name = document.getElementById('name').value
-    // const texts = document.getElementById('Textarea').value
-    // const images = document.getElementById('images').value
-
-    const result = await fetch('http://localhost:3000/api/contracts/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        description,
-        depositSeller,
-        depositBuyer,
-        walletAddressSeller,
-        walletAddressBuyer,
-        date,
-        email,
-        creator,
-        buyerID,
-        authorization
-      })
-    }).then((res) => res.json())
-    if (result.error) {
-      alert(result.error);
-    } else if (result.status == 'ok') {
-      alert('An advertisement was placed on the site');
-      window.location.replace('/admin.html')
-    }
-  }
-
+  return trade_index;
 }
 
 
