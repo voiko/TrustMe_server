@@ -21,7 +21,11 @@ const tradeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    email: {
+    emailBuyer: {
+        type: String,
+        required: false
+    },
+    emailSeller:{
         type: String,
         required: false
     },

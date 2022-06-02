@@ -11,6 +11,7 @@ const sendError = (res, code, message) => {
 //---------------------- Add new contracts //----------------------
 
 const add = (req, res, next) => {
+  console.log("begin add contract")
   const contract = new Trade({
     description: req.body.description,
     depositSeller: req.body.depositSeller,
@@ -18,7 +19,8 @@ const add = (req, res, next) => {
     walletAddressSeller: req.body.walletAddressSeller,
     walletAddressBuyer: req.body.walletAddressBuyer,
     date: req.body.date,
-    email: req.body.email,
+    emailBuyer: req.body.emailBuyer,   
+    emailSeller: req.userData.email, 
     creator: req.userData.userId,
     status: req.body.status,
     buyerID: req.body.buyerID,
@@ -31,15 +33,17 @@ const add = (req, res, next) => {
     email
   } = req.body
   const user = User.findOne({
-    email: contract.email
+    email: contract.emailBuyer
   }).then(user => {
     if (user) {
       contract.buyerID = user._id
       contract.save().then((result) => {
+        console.log("begin save contract")
         res.status(201).json({
           message: 'contract was sent to other user.',
           contractId: result.id,
-          buyerId: user._id
+          buyerId: user._id,
+          emailSeller: contract.emailSeller
         });
       })
     } else {
