@@ -45,17 +45,6 @@ const tradeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    transactionID: {
-        type: String,
-    },
-    buyerID: {
-        type: String,
-        required: true
-    },
-    status: {
-        type: String,
-        required: true
-    },
     tradeAddress: {
         type: String,
     },
