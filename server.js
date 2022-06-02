@@ -42,6 +42,17 @@ app.post('/escrow',(req,res)=>{
 
 })
 
+app.post('/viewContract',(req,res)=>{
+  
+    //res.send('sadflasdlfsadf');
+    const payload = req.body;
+    console.log(payload);
+
+    
+   res.render('viewContract',{details:payload});
+
+})
+
 const homeRouter = require('./routes/home_route')
 app.use('/home', homeRouter)
 

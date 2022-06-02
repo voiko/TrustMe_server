@@ -13,7 +13,7 @@
 <body>
   <nav class="navbar ">
     <span>
-      <label class="navbar-brand">Trust Me <label class="navbar-subTitel">Create your contract</label> </label>
+      <label class="navbar-brand">Trust Me <label class="navbar-subTitel">Contract interactions</label> </label>
     </span>
 
   </nav>
@@ -23,47 +23,11 @@
       <form id="register">
         <form class="row g-3">
           <div class="col">
-            <h4>Contract`s details</h4>
-            </br>
-            <label><b>Description: </b></label>
-            <label><%=details.description%></label>
-            <!-- <label for="exampleInputEmail1" class="form-label" id="description"><%=details.description%></label> -->
-          </div>
-          <div class="col">
-            <label><b>Buyer Email: </b></label>
-            <label ><%=details.email%></label>
-            <!-- <label for="exampleInputEmail1" class="form-label" id="email"></label> -->
-          </div>
-          <div class="col">
-            <label><b>Seller Wallet Address: </b></label>
-            <label><%=details.walletAddressSeller%></label>
-            <!-- <label for="exampleInputEmail1" class="form-label" id="walletAddressSeller"></label> -->
-          </div>
-          <div class="col">
-            <label><b>Buyer Wallet Address: </b></label>
-            <label><%=details.walletAddressBuyer%></label>
-            <!-- <label for="exampleInputEmail1" class="form-label" id="walletAddressBuyer"></label> -->
-          </div>
-          <div class="col">
-            <label><b>Seller Amount: </b></label>
-            <label><%=details.depositSeller%></label>
-            <!-- <label id="depositSeller"></label> -->
-          </div>
-          <div class="col">
-            <label><b>Buyer Amount: </b></label>
-            <label><%=details.depositBuyer%></label>
-            <!-- <label id="depositBuyer"></label> -->
-          </div>
-          <div class="col">
-            <label><b>Expired Time: </b></label>
-            <label><%=details.date%></label>
-            <!-- <label for="exampleInputEmail1" class="form-label" id="date"></label> -->
-          </div>
+            <h4>Check your payment</h4>
+            
           </br>
           <div class="col">
-            <button type="submit" class="btn btn-getTradeById" id="submitBtn">Delete</button><button type="submit"
-              class="btn btn-createTrade" id="submitBtn">Deploy</button>
-            <p><a href="http://localhost:8080/admin" id="path"></a></p>
+            <button type="submit" class="btn btn-getTradeById" id="submitBtn">Check</button>
           </div>
         </form>
       </form>

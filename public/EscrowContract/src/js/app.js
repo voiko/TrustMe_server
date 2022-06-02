@@ -69,7 +69,7 @@ App = {
 
 
     $(document).on('click', '.btn-createTrade', App.creat_Trade);
-    $(document).on('click', '.btn-escrowBalance', App.get_TradeById);
+    $(document).on('click', '.btn-getTradeById', App.get_TradeById);
     $(document).on('click', '.btn-setAgreement', App.set_Agreement);
   },
 
@@ -82,26 +82,30 @@ App = {
 
     var EscrowManagerInstance;
 
-    web3.eth.getAccounts(async function (error, accounts) {
+    web3.eth.getAccounts( function (error, accounts) {
       if (error) {
         console.log(error);
       }
 
       var account = accounts[0];
-      //----Post trade details to backend----------------
-      trade_index = await postTransaction();
-      console.log("********************************************");
-      console.log(trade_index)
-      trade_index = 0;
-      //-------------------------------------------------
-
+      
       App.contracts.EscrowManager.deployed().then(function (instance) {
         EscrowManagerInstance = instance;
-
+        
         return EscrowManagerInstance.createTrade( walletAddressSeller, walletAddressBuyer,
           depositSeller, depositBuyer, expired_time, { from: account });
-      }).then(function (result) {
-        console.log(result.logs[0].args);
+        }).then(async function (result) {
+          console.log(result.logs[0].args);
+          console.log(result.logs[0].args._tradeAddress);
+          console.log(result.logs[0].args._tradeIndex['c'][0]);
+          
+          var test = 5;
+          
+          //----Post trade details to backend----------------
+          await postTransaction(result.logs[0].args._tradeAddress, result.logs[0].args._tradeIndex['c'][0]);
+          //-------------------------------------------------
+
+
         return App.bindEvents();
       }).catch(function (err) {
         console.log(err.message);
@@ -112,7 +116,8 @@ App = {
   get_TradeById: function (event) {
     event.preventDefault();
 
-    var contractId = $('#contractId').val();
+
+   escrowId = 51;
 
     web3.eth.getAccounts(function (error, accounts) {
       if (error) {
@@ -125,7 +130,7 @@ App = {
         EscrowManagerInstance = instance;
         console.log(EscrowManagerInstance);
 
-        return EscrowManagerInstance.getTradeById(contractId, { from: account });
+        return EscrowManagerInstance.getTradeById(escrowId, { from: account });
       }).then(function (result) {
         console.log(result.logs[0]);
         return App.bindEvents();
@@ -187,13 +192,15 @@ function convetDateToTimStamp(date) {
   return newDate.getTime();
 }
 
-async function postTransaction() {
+async function postTransaction(tradeAddress , escrowId) {
   var status = 'waiting';
   var creator = '';
-  console.log('Transaction...')
+  console.log(tradeAddress)
+  console.log(escrowId)
   var buyerID = ''
   var buyerPay = false;
   var sellerPay = false;
+
 
   const result = await fetch('http://localhost:3000/api/contracts/add', {
     method: 'POST',
@@ -213,7 +220,9 @@ async function postTransaction() {
       status,
       buyerID,
       buyerPay,
-      sellerPay
+      sellerPay,
+      tradeAddress,
+      //escrowId
     })
   }).then((res) => res.json())
   if (result.error) {
@@ -221,10 +230,10 @@ async function postTransaction() {
   } else if (result.status == 'ok') {
     alert(result.contractId);
   }
-  trade_index = result.contractId
-  console.log(trade_index)
+  // trade_index = result.contractId
+  // console.log(trade_index)
 
-  return trade_index;
+ 
 }
 
 

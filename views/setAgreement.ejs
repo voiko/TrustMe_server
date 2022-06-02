@@ -25,46 +25,13 @@
           <div class="col">
             <h4>Contract`s details</h4>
             </br>
-            <label><b>Description: </b></label>
-            <label><%=details.description%></label>
+            <h4>Check the status of your contract</h4>
             <!-- <label for="exampleInputEmail1" class="form-label" id="description"><%=details.description%></label> -->
           </div>
-          <div class="col">
-            <label><b>Buyer Email: </b></label>
-            <label ><%=details.email%></label>
-            <!-- <label for="exampleInputEmail1" class="form-label" id="email"></label> -->
-          </div>
-          <div class="col">
-            <label><b>Seller Wallet Address: </b></label>
-            <label><%=details.walletAddressSeller%></label>
-            <!-- <label for="exampleInputEmail1" class="form-label" id="walletAddressSeller"></label> -->
-          </div>
-          <div class="col">
-            <label><b>Buyer Wallet Address: </b></label>
-            <label><%=details.walletAddressBuyer%></label>
-            <!-- <label for="exampleInputEmail1" class="form-label" id="walletAddressBuyer"></label> -->
-          </div>
-          <div class="col">
-            <label><b>Seller Amount: </b></label>
-            <label><%=details.depositSeller%></label>
-            <!-- <label id="depositSeller"></label> -->
-          </div>
-          <div class="col">
-            <label><b>Buyer Amount: </b></label>
-            <label><%=details.depositBuyer%></label>
-            <!-- <label id="depositBuyer"></label> -->
-          </div>
-          <div class="col">
-            <label><b>Expired Time: </b></label>
-            <label><%=details.date%></label>
-            <!-- <label for="exampleInputEmail1" class="form-label" id="date"></label> -->
-          </div>
           </br>
-          <div class="col">
-            <button type="submit" class="btn btn-getTradeById" id="submitBtn">Delete</button><button type="submit"
-              class="btn btn-createTrade" id="submitBtn">Deploy</button>
-            <p><a href="http://localhost:8080/admin" id="path"></a></p>
-          </div>
+          <button type="submit" class="btn btn-delete" id="submitBtn">Delete</button><button type="submit"
+          class="btn btn-createTrade" id="submitBtn">Deploy</button>
+        <p><a href="http://localhost:8080/admin" id="path"></a></p>
         </form>
       </form>
     </section>
@@ -91,13 +58,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
     <script>
-      var description = '<%- (details.description || null) %>'
-      var depositSeller = '<%- (details.depositSeller || null) %>'
-      var depositBuyer = '<%- (details.depositBuyer || null) %>'
-      var walletAddressSeller = '<%- (details.walletAddressSeller || null) %>'
-      var walletAddressBuyer = '<%- (details.walletAddressBuyer || null) %>'
-      var email = '<%- (details.email || null) %>'
-      var date = '<%- (details.date || null) %>'
+      var escrowId = '<%- (details.escrowId || null) %>'
       var token = '<%- (details.token || null) %>'
       
   </script>
