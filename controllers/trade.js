@@ -25,7 +25,8 @@ const add = (req, res, next) => {
     status: "Waiting",
     tradeAddress: req.body.tradeAddress,
     buyerPay: req.body.buyerPay,
-    sellerPay: req.body.sellerPay
+    sellerPay: req.body.sellerPay,
+    escrowId: req.body.escrowId
   });
   const {
     email
