@@ -5,6 +5,6 @@ const authenticate = require("../common/auth_middleware")
 
 router.post('/add', authenticate, recommendation.add);
 router.post('/getrecommendationByEmail', authenticate, recommendation.getRecommendationByEmail);
-router.get('/getAllRecommandations', authenticate, recommendation.getAllRecommandations);
+// router.get('/getAllRecommandations', authenticate, recommendation.getAllRecommandations);
 
 module.exports = router

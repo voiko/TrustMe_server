@@ -21,7 +21,11 @@ const tradeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    email: {
+    emailBuyer: {
+        type: String,
+        required: false
+    },
+    emailSeller:{
         type: String,
         required: false
     },
@@ -55,6 +59,10 @@ const tradeSchema = new mongoose.Schema({
     sellerPay: {
         type: Boolean,
         required: true
+    },
+    escrowId: { 
+        type: Number,
+        required: false
     }
 })
 
