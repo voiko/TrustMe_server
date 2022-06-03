@@ -59,6 +59,10 @@ const tradeSchema = new mongoose.Schema({
     sellerPay: {
         type: Boolean,
         required: true
+    },
+    escrowId: { 
+        type: Number,
+        required: false
     }
 })
 
