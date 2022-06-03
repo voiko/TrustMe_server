@@ -8,7 +8,7 @@ const sendError = (res, code, message) => {
     'error': message
   })
 }
-//---------------------- Add new contracts //----------------------
+//---------------------- Add new contracts //----------------------//
 
 const add = (req, res, next) => {
   console.log("begin add contract")
