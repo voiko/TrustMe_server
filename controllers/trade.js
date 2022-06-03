@@ -11,7 +11,6 @@ const sendError = (res, code, message) => {
 //---------------------- Add new contracts //----------------------
 
 const add = (req, res, next) => {
-  console.log("begin add contract")
   const contract = new Trade({
     description: req.body.description,
     depositSeller: req.body.depositSeller,
@@ -19,8 +18,8 @@ const add = (req, res, next) => {
     walletAddressSeller: req.body.walletAddressSeller,
     walletAddressBuyer: req.body.walletAddressBuyer,
     date: req.body.date,
-    emailBuyer: req.body.emailBuyer,   
-    emailSeller: req.userData.email, 
+    emailBuyer: req.body.emailBuyer,
+    emailSeller: req.userData.email,
     creator: req.userData.userId,
     status: req.body.status,
     buyerID: req.body.buyerID,
@@ -39,7 +38,6 @@ const add = (req, res, next) => {
     if (user) {
       contract.buyerID = user._id
       contract.save().then((result) => {
-        console.log("begin save contract")
         res.status(201).json({
           message: 'contract was sent to other user.',
           contractId: result.id,
@@ -83,7 +81,6 @@ const getContract = async (req, res) => {
 
 const getNewContractByUserId = async (req, res, next) => {
   const creatorId = req.userData.userId
-  console.log("begin get new Contract")
   Trade.find({
     $and: [{
         $or: [{
@@ -99,7 +96,6 @@ const getNewContractByUserId = async (req, res, next) => {
       }
     ]
   }).then(documents => {
-    console.log(documents)
     res.status(200).json({
       message: 'New transction has been made successfully',
       contracts: documents
@@ -199,7 +195,6 @@ const getHistoryByEmail = async (req, res) => {
     email: req.body.partner
   }).then(user => {
     if (user) {
-      console.log(user._id.valueOf())
       return user;
     }
   }, err => {
@@ -239,7 +234,6 @@ const getNewContractByEmail = async (req, res) => {
     email: req.body.partner
   }).then(user => {
     if (user) {
-      console.log(user._id.valueOf())
       return user;
     }
   }, err => {
