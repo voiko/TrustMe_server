@@ -65,8 +65,10 @@ App = {
     return App.bindEvents();
   },
 
-  bindEvents: function () {
+  bindEvents:  function () {
 
+    
+    
 
     $(document).on('click', '.btn-createTrade', App.creat_Trade);
     $(document).on('click', '.btn-getTradeById', App.get_TradeById);
@@ -117,7 +119,7 @@ App = {
     event.preventDefault();
 
 
-   escrowId = 51;
+   escrowId = 50;
 
     web3.eth.getAccounts(function (error, accounts) {
       if (error) {
@@ -131,35 +133,58 @@ App = {
         console.log(EscrowManagerInstance);
 
         return EscrowManagerInstance.getTradeById(escrowId, { from: account });
-      }).then(function (result) {
-        console.log(result.logs[0]);
+      }).then(async function (result) {
+        console.log(result.logs[0])
+        // var sellerPay = result.logs[0].args._sellerPaid;
+        // var buyerPay = result.logs[0].args._buyerPaid;
+
+        var sellerPay = true;
+        var buyerPay = true;
+        console.log(sellerPay)
+        console.log(buyerPay)
+       
+         await UpdateStatusByEscrowId(escrowId , buyerPay , sellerPay);
+
         return App.bindEvents();
       }).catch(function (err) {
         console.log(err.message);
       });
 
     });
+    window.location.replace('http://localhost:4200/')
   },
 
   set_Agreement: function (event) {
     event.preventDefault();
 
+    escrowId = 54;
+
     var contractId = $('#contractId_getAgreement').val();
 
     var EscrowManagerInstance;
 
-    web3.eth.getAccounts(function (error, accounts) {
+    web3.eth.getAccounts(async function (error, accounts) {
       if (error) {
         console.log(error);
       }
-
+//----just for debuging----------
+      var buyerPay = true;
+      var sellerPay = true;
+      await UpdateStatusByEscrowId(escrowId , buyerPay , sellerPay);
+      //--------------------------------     
       var account = accounts[0];
 
       App.contracts.EscrowManager.deployed().then(function (instance) {
         EscrowManagerInstance = instance;
 
-        return EscrowManagerInstance.setAgreement(contractId, { from: account });
+        return EscrowManagerInstance.setAgreement(escrowId, { from: account });
       }).then(function (result) {
+
+        //TODO chage to this after the testing 
+        // var buyerPay = true;
+        // var sellerPay = true;
+       
+        // await UpdateStatusByEscrowId(escrowId , buyerPay , sellerPay);
         alert("Deal is done, The money is back")
         return App.bindEvents();
       }).catch(function (err) {
@@ -222,7 +247,7 @@ async function postTransaction(tradeAddress , escrowId) {
       buyerPay,
       sellerPay,
       tradeAddress,
-      //escrowId
+      //TODO send the escrowId
     })
   }).then((res) => res.json())
   if (result.error) {
@@ -234,6 +259,33 @@ async function postTransaction(tradeAddress , escrowId) {
   // console.log(trade_index)
 
  
+}
+
+async function UpdateStatusByEscrowId(escrowId, buyerPay , sellerPay) {
+  var status = 'Oved';
+  var id = "6299e60043af56734f676f9d";
+  //TODO to replace _id to escrowId 
+console.log("in the func");
+
+  const result = await fetch('http://localhost:3000/api/contracts/updateContract', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: token
+    },
+    body: JSON.stringify({
+      id, //TODO to replace _id to escrowId 
+      status,
+      sellerPay,
+      buyerPay
+    })
+  }).then((res) => res.json())
+  if (result.error) {
+    alert(result.error);
+  } else if (result.status == 'ok') {
+    alert(result.contractId);
+  }
+  console.log(result);
 }
 
 

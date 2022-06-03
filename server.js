@@ -53,6 +53,17 @@ app.post('/viewContract',(req,res)=>{
 
 })
 
+app.post('/setAgreement',(req,res)=>{
+  
+    //res.send('sadflasdlfsadf');
+    const payload = req.body;
+    console.log(payload);
+
+    
+   res.render('setAgreement',{details:payload});
+
+})
+
 const homeRouter = require('./routes/home_route')
 app.use('/home', homeRouter)
 

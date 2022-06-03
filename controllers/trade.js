@@ -277,11 +277,16 @@ const updateContract = async (req, res, next) => {
   // const TradeId = mongoose.Types.ObjectId(_id)
   console.log(req.body);
   console.log(req.body.id);
+  console.log(req.body.status);
+  console.log("*******************************");
   Trade.updateOne({
     _id: req.body.id
   }, {
     $set: {
-      status: "Created"
+      status: req.body.status,
+      sellerPay: req.body.sellerPay,
+      buyerPay: req.body.buyerPay
+
     }
   }).then(data => {
     console.log(data);
