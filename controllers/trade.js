@@ -11,6 +11,7 @@ const sendError = (res, code, message) => {
 //---------------------- Add new contracts //----------------------
 
 const add = (req, res, next) => {
+  console.log("begin add contract")
   const contract = new Trade({
     description: req.body.description,
     depositSeller: req.body.depositSeller,
@@ -38,6 +39,7 @@ const add = (req, res, next) => {
     if (user) {
       contract.buyerID = user._id
       contract.save().then((result) => {
+        console.log("begin save contract")
         res.status(201).json({
           message: 'contract was sent to other user.',
           contractId: result.id,
@@ -81,7 +83,7 @@ const getContract = async (req, res) => {
 
 const getNewContractByUserId = async (req, res, next) => {
   const creatorId = req.userData.userId
-
+  console.log("begin get new Contract")
   Trade.find({
     $and: [{
         $or: [{
@@ -93,10 +95,11 @@ const getNewContractByUserId = async (req, res, next) => {
         ]
       },
       {
-        status: "Created",
+        status: "Waiting",
       }
     ]
   }).then(documents => {
+    console.log(documents)
     res.status(200).json({
       message: 'New transction has been made successfully',
       contracts: documents
@@ -246,7 +249,7 @@ const getNewContractByEmail = async (req, res) => {
   });
 
   Trade.find({
-    status: "Created",
+    status: "Waiting",
     $or: [{
       creator: user.id.valueOf()
     }, {
