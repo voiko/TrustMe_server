@@ -262,7 +262,7 @@ const getNewContractByEmail = async (req, res) => {
       });
     });
 }
-
+//---------------------- Updtae Status //----------------------
 const updateContract = async (req, res, next) => {
   Trade.updateOne({
     _id: req.body.id
@@ -281,6 +281,47 @@ const updateContract = async (req, res, next) => {
   })
 }
 
+//---------------------- Update Seller Pay //----------------------
+
+const updateSellerPay = async (req, res, next) => {
+  Trade.updateOne({
+    _id: req.body.id
+  }, {
+    $set: {
+      sellerPay: true
+    }
+  }).then(data => {
+    res.status(200).json({
+      message: "Update Seller Pay",
+      seller: data
+    })
+  }, err => {
+    res.status(401).json({
+      message: 'Falid to Update Seller Pay',
+    });
+  })
+}
+//---------------------- Update Buyer Pay //----------------------
+
+const updateBuyerPay = async (req, res, next) => {
+  Trade.updateOne({
+    _id: req.body.id
+  }, {
+    $set: {
+      buyerPay: true
+    }
+  }).then(data => {
+    res.status(200).json({
+      message: "Update Buyer Pay",
+      buyer: data
+    })
+  }, err => {
+    res.status(401).json({
+      message: 'Falid to Update Buyer Pay',
+    });
+  })
+}
+
 module.exports = {
   add,
   getContract,
@@ -290,5 +331,7 @@ module.exports = {
   cancelContract,
   getHistoryByEmail,
   getNewContractByEmail,
-  updateContract
+  updateContract,
+  updateSellerPay,
+  updateBuyerPay
 }

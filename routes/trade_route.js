@@ -10,6 +10,8 @@ router.post('/getHistoryByEmail', authenticate, Trade.getHistoryByEmail)
 router.post('/getNewContractByEmail', authenticate, Trade.getNewContractByEmail)
 router.get('/getContracts', authenticate, Trade.getContract)
 router.post('/updateContract', authenticate, Trade.updateContract)
+router.post('/updateSellerPay', authenticate, Trade.updateSellerPay)
+router.post('/updateBuyerPay', authenticate, Trade.updateBuyerPay)
 router.put('/:id', authenticate, Trade.editContract)
 router.delete('/:id', authenticate, Trade.cancelContract)
 
