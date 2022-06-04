@@ -35,16 +35,21 @@ const recommendationRouter = require('./routes/recommendation_route');
 app.use('/api/recommendation', recommendationRouter);
 
 app.post('/escrow', (req, res) => {
-
-    //res.send('sadflasdlfsadf');
     const payload = req.body;
     console.log(payload);
+    res.render('escrow', {details: payload});
+})
 
+app.post('/viewContract',(req,res)=>{
+    const payload = req.body;
+    console.log(payload);
+   res.render('viewContract',{details:payload});
+})
 
-    res.render('escrow', {
-        details: payload
-    });
-
+app.post('/setAgreement',(req,res)=>{
+    const payload = req.body;
+    console.log(payload);
+   res.render('setAgreement',{details:payload});
 })
 
 const homeRouter = require('./routes/home_route')
