@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link href="css/login.css" rel="stylesheet">
+  <link href="EscrowContract/src/css/login.css" rel="stylesheet">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
 
@@ -26,31 +26,38 @@
             <h4>Contract`s details</h4>
             </br>
             <label><b>Description: </b></label>
-            <label for="exampleInputEmail1" class="form-label" id="description"></label>
+            <label><%=details.description%></label>
+            <!-- <label for="exampleInputEmail1" class="form-label" id="description"><%=details.description%></label> -->
           </div>
           <div class="col">
             <label><b>Buyer Email: </b></label>
-            <label for="exampleInputEmail1" class="form-label" id="email"></label>
+            <label ><%=details.email%></label>
+            <!-- <label for="exampleInputEmail1" class="form-label" id="email"></label> -->
           </div>
           <div class="col">
             <label><b>Seller Wallet Address: </b></label>
-            <label for="exampleInputEmail1" class="form-label" id="sellerAddress"></label>
+            <label><%=details.walletAddressSeller%></label>
+            <!-- <label for="exampleInputEmail1" class="form-label" id="walletAddressSeller"></label> -->
           </div>
           <div class="col">
             <label><b>Buyer Wallet Address: </b></label>
-            <label for="exampleInputEmail1" class="form-label" id="buyerAddress"></label>
+            <label><%=details.walletAddressBuyer%></label>
+            <!-- <label for="exampleInputEmail1" class="form-label" id="walletAddressBuyer"></label> -->
           </div>
           <div class="col">
             <label><b>Seller Amount: </b></label>
-            <label id="sellerAmount"></label>
+            <label><%=details.depositSeller%></label>
+            <!-- <label id="depositSeller"></label> -->
           </div>
           <div class="col">
             <label><b>Buyer Amount: </b></label>
-            <label id="buyerAmount"></label>
+            <label><%=details.depositBuyer%></label>
+            <!-- <label id="depositBuyer"></label> -->
           </div>
           <div class="col">
             <label><b>Expired Time: </b></label>
-            <label for="exampleInputEmail1" class="form-label" id="expiredTime"></label>
+            <label><%=details.date%></label>
+            <!-- <label for="exampleInputEmail1" class="form-label" id="date"></label> -->
           </div>
           </br>
           <div class="col">
@@ -75,16 +82,28 @@
       </p>
 
     </section>
-    <div id="message1" type="test"></div>
     <div id="message2" type="test"></div>
     <div id="message3" type="test"></div>
     <div id="message4" type="test"></div>
     <div id="message5" type="test"></div>
     <div id="message6" type="test"></div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="js/web3.min.js"></script>
-    <script src="js/truffle-contract.js"></script>
-    <script src="js/app.js"></script>
+
+    <script>
+      var description = '<%- (details.description || null) %>'
+      var depositSeller = '<%- (details.depositSeller || null) %>'
+      var depositBuyer = '<%- (details.depositBuyer || null) %>'
+      var walletAddressSeller = '<%- (details.walletAddressSeller || null) %>'
+      var walletAddressBuyer = '<%- (details.walletAddressBuyer || null) %>'
+      var email = '<%- (details.email || null) %>'
+      var date = '<%- (details.date || null) %>'
+      var token = '<%- (details.token || null) %>'
+      
+  </script>
+    <script src="EscrowContract/src/js/web3.min.js"></script>
+    <script src="EscrowContract/src/js/truffle-contract.js"></script>
+    <script src="EscrowContract/src/js/app.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </body>

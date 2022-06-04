@@ -3,8 +3,9 @@ $(function () {
     App.init();
   });
 });
-
+var trade_index = 0;
 App = {
+  // trade_index: 0,
   params: null,
   web3Provider: null,
   contracts: {},
@@ -19,6 +20,7 @@ App = {
     console.log(email);
     console.log(token);
     console.log(date);
+   
 
     return await App.initWeb3();
   },
@@ -63,11 +65,13 @@ App = {
     return App.bindEvents();
   },
 
-  bindEvents: function () {
+  bindEvents:  function () {
 
+    
+    
 
     $(document).on('click', '.btn-createTrade', App.creat_Trade);
-    $(document).on('click', '.btn-escrowBalance', App.get_TradeById);
+    $(document).on('click', '.btn-getTradeById', App.get_TradeById);
     $(document).on('click', '.btn-setAgreement', App.set_Agreement);
   },
 
@@ -76,28 +80,34 @@ App = {
   
 
     var expired_time = convetDateToTimStamp(date);
-    var trade_index = 0;
-    var status = "waiting;";
+    
 
     var EscrowManagerInstance;
 
-    web3.eth.getAccounts(function (error, accounts) {
+    web3.eth.getAccounts( function (error, accounts) {
       if (error) {
         console.log(error);
       }
 
       var account = accounts[0];
-      //----Post trade details to backend-----   test     -----------
-      // postTransaction()
-      //-------------------------------------------------
-
+      
       App.contracts.EscrowManager.deployed().then(function (instance) {
         EscrowManagerInstance = instance;
-
-        return EscrowManagerInstance.createTrade(trade_index, walletAddressSeller, walletAddressBuyer,
+        
+        return EscrowManagerInstance.createTrade( walletAddressSeller, walletAddressBuyer,
           depositSeller, depositBuyer, expired_time, { from: account });
-      }).then(function (result) {
-        console.log(result.logs[0].args);
+        }).then(async function (result) {
+          console.log(result.logs[0].args);
+          console.log(result.logs[0].args._tradeAddress);
+          console.log(result.logs[0].args._tradeIndex['c'][0]);
+          
+          var test = 5;
+          
+          //----Post trade details to backend----------------
+          await postTransaction(result.logs[0].args._tradeAddress, result.logs[0].args._tradeIndex['c'][0]);
+          //-------------------------------------------------
+
+
         return App.bindEvents();
       }).catch(function (err) {
         console.log(err.message);
@@ -108,7 +118,8 @@ App = {
   get_TradeById: function (event) {
     event.preventDefault();
 
-    var contractId = $('#contractId').val();
+
+   escrowId = 50;
 
     web3.eth.getAccounts(function (error, accounts) {
       if (error) {
@@ -121,35 +132,59 @@ App = {
         EscrowManagerInstance = instance;
         console.log(EscrowManagerInstance);
 
-        return EscrowManagerInstance.getTradeById(contractId, { from: account });
-      }).then(function (result) {
-        console.log(result.logs[0]);
+        return EscrowManagerInstance.getTradeById(escrowId, { from: account });
+      }).then(async function (result) {
+        console.log(result.logs[0])
+        // var sellerPay = result.logs[0].args._sellerPaid;
+        // var buyerPay = result.logs[0].args._buyerPaid;
+
+        var sellerPay = true;
+        var buyerPay = true;
+        console.log(sellerPay)
+        console.log(buyerPay)
+       
+         await UpdateStatusByEscrowId(escrowId , buyerPay , sellerPay);
+
         return App.bindEvents();
       }).catch(function (err) {
         console.log(err.message);
       });
+
     });
+    window.location.replace('http://localhost:4200/')
   },
 
   set_Agreement: function (event) {
     event.preventDefault();
 
+    escrowId = 54;
+
     var contractId = $('#contractId_getAgreement').val();
 
     var EscrowManagerInstance;
 
-    web3.eth.getAccounts(function (error, accounts) {
+    web3.eth.getAccounts(async function (error, accounts) {
       if (error) {
         console.log(error);
       }
-
+//----just for debuging----------
+      var buyerPay = true;
+      var sellerPay = true;
+      await UpdateStatusByEscrowId(escrowId , buyerPay , sellerPay);
+      //--------------------------------     
       var account = accounts[0];
 
       App.contracts.EscrowManager.deployed().then(function (instance) {
         EscrowManagerInstance = instance;
 
-        return EscrowManagerInstance.setAgreement(contractId, { from: account });
+        return EscrowManagerInstance.setAgreement(escrowId, { from: account });
       }).then(function (result) {
+
+        //TODO chage to this after the testing 
+        // var buyerPay = true;
+        // var sellerPay = true;
+       
+        // await UpdateStatusByEscrowId(escrowId , buyerPay , sellerPay);
         alert("Deal is done, The money is back")
         return App.bindEvents();
       }).catch(function (err) {
@@ -182,24 +217,21 @@ function convetDateToTimStamp(date) {
   return newDate.getTime();
 }
 
-async function postTransaction() {
-  var description = App.params.description;
-  var depositSeller = App.params.depositSeller;
-  var depositBuyer = App.params.depositBuyer;
-  var walletAddressSeller = App.params.walletAddressSeller;
-  var walletAddressBuyer = App.params.walletAddressBuyer;
-  var date = App.params.date;
-  var email = App.params.email;
-  var creator = "626ed80d799270f5d99bbd05"
-  var buyerID = "null"
-  console.log("in the function - " + description + "-" + depositSeller + "-" + email + "-" + date);
-  var status = "waiting;";
+async function postTransaction(tradeAddress , escrowId) {
+  var status = 'waiting';
+  var creator = '';
+  console.log(tradeAddress)
+  console.log(escrowId)
+  var buyerID = ''
+  var buyerPay = false;
+  var sellerPay = false;
+
 
   const result = await fetch('http://localhost:3000/api/contracts/add', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imltb3JrcmF2aXR6QGdtYWlsLmNvbSIsInVzZXJJZCI6IjYyNmVkODBkNzk5MjcwZjVkOTliYmQwNSIsImlhdCI6MTY1MzQ5NzA0MiwiZXhwIjoxNjUzNDk3OTQyfQ.vImRRffRvu9vypHAK71vDEYIRWvvevClOoj0XWLYOY4'
+      authorization: token
     },
     body: JSON.stringify({
       description,
@@ -211,60 +243,49 @@ async function postTransaction() {
       email,
       creator,
       status,
-      buyerID
+      buyerID,
+      buyerPay,
+      sellerPay,
+      tradeAddress,
+      //TODO send the escrowId
     })
   }).then((res) => res.json())
   if (result.error) {
     alert(result.error);
   } else if (result.status == 'ok') {
-    alert("succses!")
+    alert(result.contractId);
   }
+  // trade_index = result.contractId
+  // console.log(trade_index)
 
+ 
+}
 
-  async function insert(event) {
+async function UpdateStatusByEscrowId(escrowId, buyerPay , sellerPay) {
+  var status = 'Oved';
+  var id = "6299e60043af56734f676f9d";
+  //TODO to replace _id to escrowId 
+console.log("in the func");
 
-    // event.preventDefault()
-    var description = App.params.description;
-    var depositSeller = App.params.depositSeller;
-    var depositBuyer = App.params.depositBuyer;
-    var walletAddressSeller = App.params.walletAddressSeller;
-    var walletAddressBuyer = App.params.walletAddressBuyer;
-    var date = App.params.date;
-    var email = App.params.email;
-    var creator = "626ed80d799270f5d99bbd05"
-    var buyerID = "null"
-    var authorization = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imltb3JrcmF2aXR6QGdtYWlsLmNvbSIsInVzZXJJZCI6IjYyNmVkODBkNzk5MjcwZjVkOTliYmQwNSIsImlhdCI6MTY1MzQ5NTk0NSwiZXhwIjoxNjUzNDk2ODQ1fQ.tkttyMn0Kwpi_n8Wg_C1ip62VswZ9cvU1WdsmTr6XRw"
-
-    // const name = document.getElementById('name').value
-    // const texts = document.getElementById('Textarea').value
-    // const images = document.getElementById('images').value
-
-    const result = await fetch('http://localhost:3000/api/contracts/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        description,
-        depositSeller,
-        depositBuyer,
-        walletAddressSeller,
-        walletAddressBuyer,
-        date,
-        email,
-        creator,
-        buyerID,
-        authorization
-      })
-    }).then((res) => res.json())
-    if (result.error) {
-      alert(result.error);
-    } else if (result.status == 'ok') {
-      alert('An advertisement was placed on the site');
-      window.location.replace('/admin.html')
-    }
+  const result = await fetch('http://localhost:3000/api/contracts/updateContract', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: token
+    },
+    body: JSON.stringify({
+      id, //TODO to replace _id to escrowId 
+      status,
+      sellerPay,
+      buyerPay
+    })
+  }).then((res) => res.json())
+  if (result.error) {
+    alert(result.error);
+  } else if (result.status == 'ok') {
+    alert(result.contractId);
   }
-
+  console.log(result);
 }
 
 
