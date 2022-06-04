@@ -26,8 +26,10 @@ const add = (req, res, next) => {
     status: req.body.status, // Waiting
     tradeAddress: req.body.tradeAddress,
     buyerPay: req.body.buyerPay,
-    sellerPay: req.body.sellerPay, 
-    escrowId: req.body.escrowId, 
+    sellerPay: req.body.sellerPay,
+    escrowId: req.body.escrowId,
+    buyerAgreement: false,
+    sellerAgreement: false,
   });
   console.log(req.body.escrowId)
   const {
@@ -230,7 +232,6 @@ const getHistoryByEmail = async (req, res) => {
 
 const getNewContractByEmail = async (req, res) => {
   const creatorId = req.userData.userId
-
   const user = await User.findOne({
     email: req.body.partner
   }).then(user => {
@@ -266,7 +267,7 @@ const getNewContractByEmail = async (req, res) => {
 //---------------------- Updtae Status //----------------------
 const updateContract = async (req, res, next) => {
   Trade.updateOne({
-    _id: req.body.id
+    escrowId: req.body.escrowId
   }, {
     $set: {
       status: req.body.status,
@@ -286,12 +287,13 @@ const updateContract = async (req, res, next) => {
 
 //---------------------- Update Seller Pay //----------------------
 
-const updateSellerPay = async (req, res, next) => {
+const setAgreement = async (req, res, next) => {
   Trade.updateOne({
     _id: req.body.id
   }, {
     $set: {
-      sellerPay: true
+      sellerAgreement: req.body.sellerAgreement,
+      buyerAgreement: req.body.buyerAgreement
     }
   }).then(data => {
     res.status(200).json({
@@ -306,25 +308,6 @@ const updateSellerPay = async (req, res, next) => {
 }
 //---------------------- Update Buyer Pay //----------------------
 
-const updateBuyerPay = async (req, res, next) => {
-  Trade.updateOne({
-    _id: req.body.id
-  }, {
-    $set: {
-      buyerPay: true
-    }
-  }).then(data => {
-    res.status(200).json({
-      message: "Update Buyer Pay",
-      buyer: data
-    })
-  }, err => {
-    res.status(401).json({
-      message: 'Falid to Update Buyer Pay',
-    });
-  })
-}
-
 module.exports = {
   add,
   getContract,
@@ -335,6 +318,5 @@ module.exports = {
   getHistoryByEmail,
   getNewContractByEmail,
   updateContract,
-  updateSellerPay,
-  updateBuyerPay
+  setAgreement
 }

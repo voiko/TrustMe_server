@@ -45,15 +45,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
     <script>
-        var description = '<%- (details.description || null) %>'
-        var depositSeller = '<%- (details.depositSeller || null) %>'
-        var depositBuyer = '<%- (details.depositBuyer || null) %>'
-        var walletAddressSeller = '<%- (details.walletAddressSeller || null) %>'
-        var walletAddressBuyer = '<%- (details.walletAddressBuyer || null) %>'
-        var emailBuyer = '<%- (details.email || null) %>'
-        var date = '<%- (details.date || null) %>'
+        var escrowId = '<%- (details.escrowId || null) %>'
         var token = '<%- (details.token || null) %>'
-
     </script>
     <script src="EscrowContract/src/js/web3.min.js"></script>
     <script src="EscrowContract/src/js/truffle-contract.js"></script>

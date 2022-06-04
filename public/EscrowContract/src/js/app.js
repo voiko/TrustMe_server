@@ -5,34 +5,29 @@ $(function () {
 });
 var trade_index = 0;
 App = {
-  
+
   params: null,
   web3Provider: null,
   contracts: {},
 
   init: async function () {
-
-    console.log(description);
-    console.log(depositSeller);
-    console.log(depositBuyer);
-    console.log(walletAddressSeller);
-    console.log(walletAddressBuyer);
-    console.log(emailBuyer);
     console.log(token);
-    console.log(date);
-   
+    console.log(escrowId);
+
 
     return await App.initWeb3();
   },
 
   initWeb3: async function () {
-    
+
     // Modern dapp browsers...
     if (window.ethereum) {
       App.web3Provider = window.ethereum;
       try {
         // Request account access
-        await window.ethereum.request({ method: "eth_requestAccounts" });
+        await window.ethereum.request({
+          method: "eth_requestAccounts"
+        });
       } catch (error) {
         // User denied account access...
         console.error("User denied account access")
@@ -65,7 +60,7 @@ App = {
     return App.bindEvents();
   },
 
-  bindEvents:  function () {
+  bindEvents: function () {
 
     $(document).on('click', '.btn-createTrade', App.creat_Trade);
     $(document).on('click', '.btn-getTradeById', App.get_TradeById);
@@ -74,33 +69,35 @@ App = {
 
   creat_Trade: function (event) {
     event.preventDefault();
-  
+
 
     var expired_time = convetDateToTimStamp(date);
-    
+
 
     var EscrowManagerInstance;
 
-    web3.eth.getAccounts( function (error, accounts) {
+    web3.eth.getAccounts(function (error, accounts) {
       if (error) {
         console.log(error);
       }
 
       var account = accounts[0];
-      
+
       App.contracts.EscrowManager.deployed().then(function (instance) {
         EscrowManagerInstance = instance;
-        
-        return EscrowManagerInstance.createTrade( walletAddressSeller, walletAddressBuyer,
-          depositSeller, depositBuyer, expired_time, { from: account });
-        }).then(async function (result) {
-          console.log(result.logs[0].args);
-          console.log(result.logs[0].args._tradeAddress);
-          console.log(result.logs[0].args._tradeIndex['c'][0]);
-          
-          //----Post trade details to backend----------------
-          await postTransaction(result.logs[0].args._tradeAddress, result.logs[0].args._tradeIndex['c'][0]);
-          //-------------------------------------------------
+
+        return EscrowManagerInstance.createTrade(walletAddressSeller, walletAddressBuyer,
+          depositSeller, depositBuyer, expired_time, {
+            from: account
+          });
+      }).then(async function (result) {
+        console.log(result.logs[0].args);
+        console.log(result.logs[0].args._tradeAddress);
+        console.log(result.logs[0].args._tradeIndex['c'][0]);
+
+        //----Post trade details to backend----------------
+        await postTransaction(result.logs[0].args._tradeAddress, result.logs[0].args._tradeIndex['c'][0]);
+        //-------------------------------------------------
 
 
         return App.bindEvents();
@@ -114,7 +111,7 @@ App = {
     event.preventDefault();
 
 
-   escrowId = 64;
+    escrowId = 64;
 
     web3.eth.getAccounts(function (error, accounts) {
       if (error) {
@@ -127,7 +124,9 @@ App = {
         EscrowManagerInstance = instance;
         console.log(EscrowManagerInstance);
 
-        return EscrowManagerInstance.getTradeById(escrowId, { from: account });
+        return EscrowManagerInstance.getTradeById(escrowId, {
+          from: account
+        });
       }).then(async function (result) {
         console.log(result.logs[0])
         var sellerPay = result.logs[0].args._sellerPaid;
@@ -135,8 +134,8 @@ App = {
 
         console.log(sellerPay)
         console.log(buyerPay)
-       
-         await UpdateStatusByEscrowId(escrowId , buyerPay , sellerPay);
+
+        await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay);
 
         return App.bindEvents();
       }).catch(function (err) {
@@ -160,23 +159,25 @@ App = {
       if (error) {
         console.log(error);
       }
-//----just for debuging----------
+      //----just for debuging----------
       var buyerPay = true;
       var sellerPay = true;
-      await UpdateStatusByEscrowId(escrowId , buyerPay , sellerPay);
+      await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay);
       //--------------------------------     
       var account = accounts[0];
 
       App.contracts.EscrowManager.deployed().then(function (instance) {
         EscrowManagerInstance = instance;
 
-        return EscrowManagerInstance.setAgreement(escrowId, { from: account });
+        return EscrowManagerInstance.setAgreement(escrowId, {
+          from: account
+        });
       }).then(function (result) {
 
         //TODO chage to this after the testing 
         // var buyerPay = true;
         // var sellerPay = true;
-       
+
         // await UpdateStatusByEscrowId(escrowId , buyerPay , sellerPay);
         alert("Deal is done, The money is back")
         return App.bindEvents();
@@ -210,7 +211,7 @@ function convetDateToTimStamp(date) {
   return newDate.getTime();
 }
 
-async function postTransaction(tradeAddress , escrowId) {
+async function postTransaction(tradeAddress, escrowId) {
   var status = 'Waiting';
   var creator = '';
   console.log(tradeAddress)
@@ -251,14 +252,14 @@ async function postTransaction(tradeAddress , escrowId) {
   // trade_index = result.contractId
   // console.log(trade_index)
 
- 
+
 }
 
-async function UpdateStatusByEscrowId(escrowId, buyerPay , sellerPay) {
+async function UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay) {
   var status = 'Active';
   var id = "629b0728af0e7c6b6ca72c31";
   //TODO to replace _id to escrowId 
-console.log("in the func");
+  console.log("in the func");
 
   const result = await fetch('http://localhost:3000/api/contracts/updateContract', {
     method: 'POST',
@@ -280,5 +281,3 @@ console.log("in the func");
   }
   console.log(result);
 }
-
-
