@@ -61,7 +61,7 @@
           </div>
           </br>
           <div class="col">
-            <button type="submit" class="btn btn-delete" id="submitBtn">Delete</button><button type="submit"
+            <button type="submit" class="btn btn-getTradeById" id="submitBtn">Delete</button><button type="submit"
               class="btn btn-createTrade" id="submitBtn">Deploy</button>
             <p><a href="http://localhost:8080/admin" id="path"></a></p>
           </div>
@@ -96,7 +96,7 @@
       var depositBuyer = '<%- (details.depositBuyer || null) %>'
       var walletAddressSeller = '<%- (details.walletAddressSeller || null) %>'
       var walletAddressBuyer = '<%- (details.walletAddressBuyer || null) %>'
-      var email = '<%- (details.email || null) %>'
+      var emailBuyer = '<%- (details.email || null) %>'
       var date = '<%- (details.date || null) %>'
       var token = '<%- (details.token || null) %>'
       

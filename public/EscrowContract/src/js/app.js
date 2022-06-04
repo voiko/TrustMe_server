@@ -5,7 +5,7 @@ $(function () {
 });
 var trade_index = 0;
 App = {
-  // trade_index: 0,
+  
   params: null,
   web3Provider: null,
   contracts: {},
@@ -17,7 +17,7 @@ App = {
     console.log(depositBuyer);
     console.log(walletAddressSeller);
     console.log(walletAddressBuyer);
-    console.log(email);
+    console.log(emailBuyer);
     console.log(token);
     console.log(date);
    
@@ -67,9 +67,6 @@ App = {
 
   bindEvents:  function () {
 
-    
-    
-
     $(document).on('click', '.btn-createTrade', App.creat_Trade);
     $(document).on('click', '.btn-getTradeById', App.get_TradeById);
     $(document).on('click', '.btn-setAgreement', App.set_Agreement);
@@ -101,8 +98,6 @@ App = {
           console.log(result.logs[0].args._tradeAddress);
           console.log(result.logs[0].args._tradeIndex['c'][0]);
           
-          var test = 5;
-          
           //----Post trade details to backend----------------
           await postTransaction(result.logs[0].args._tradeAddress, result.logs[0].args._tradeIndex['c'][0]);
           //-------------------------------------------------
@@ -119,7 +114,7 @@ App = {
     event.preventDefault();
 
 
-   escrowId = 50;
+   escrowId = 64;
 
     web3.eth.getAccounts(function (error, accounts) {
       if (error) {
@@ -135,11 +130,9 @@ App = {
         return EscrowManagerInstance.getTradeById(escrowId, { from: account });
       }).then(async function (result) {
         console.log(result.logs[0])
-        // var sellerPay = result.logs[0].args._sellerPaid;
-        // var buyerPay = result.logs[0].args._buyerPaid;
+        var sellerPay = result.logs[0].args._sellerPaid;
+        var buyerPay = result.logs[0].args._buyerPaid;
 
-        var sellerPay = true;
-        var buyerPay = true;
         console.log(sellerPay)
         console.log(buyerPay)
        
@@ -151,13 +144,13 @@ App = {
       });
 
     });
-    window.location.replace('http://localhost:4200/')
+    // window.location.replace('http://localhost:4200/')
   },
 
   set_Agreement: function (event) {
     event.preventDefault();
 
-    escrowId = 54;
+    escrowId = 64;
 
     var contractId = $('#contractId_getAgreement').val();
 
@@ -218,7 +211,7 @@ function convetDateToTimStamp(date) {
 }
 
 async function postTransaction(tradeAddress , escrowId) {
-  var status = 'waiting';
+  var status = 'Waiting';
   var creator = '';
   console.log(tradeAddress)
   console.log(escrowId)
@@ -240,14 +233,14 @@ async function postTransaction(tradeAddress , escrowId) {
       walletAddressSeller,
       walletAddressBuyer,
       date,
-      email,
+      emailBuyer,
       creator,
       status,
       buyerID,
       buyerPay,
       sellerPay,
       tradeAddress,
-      //TODO send the escrowId
+      escrowId
     })
   }).then((res) => res.json())
   if (result.error) {
@@ -262,8 +255,8 @@ async function postTransaction(tradeAddress , escrowId) {
 }
 
 async function UpdateStatusByEscrowId(escrowId, buyerPay , sellerPay) {
-  var status = 'Oved';
-  var id = "6299e60043af56734f676f9d";
+  var status = 'Active';
+  var id = "629b0728af0e7c6b6ca72c31";
   //TODO to replace _id to escrowId 
 console.log("in the func");
 

@@ -23,12 +23,13 @@ const add = (req, res, next) => {
     creator: req.userData.userId,
     status: req.body.status,
     buyerID: req.body.buyerID,
-    status: "Waiting",
+    status: req.body.status, // Waiting
     tradeAddress: req.body.tradeAddress,
     buyerPay: req.body.buyerPay,
-    sellerPay: req.body.sellerPay,
-    escrowId: "1", // default
+    sellerPay: req.body.sellerPay, 
+    escrowId: req.body.escrowId, 
   });
+  console.log(req.body.escrowId)
   const {
     email
   } = req.body
@@ -268,7 +269,9 @@ const updateContract = async (req, res, next) => {
     _id: req.body.id
   }, {
     $set: {
-      status: "Created"
+      status: req.body.status,
+      sellerPay: req.body.sellerPay,
+      buyerPay: req.body.buyerPay
     }
   }).then(data => {
     res.status(200).json({
