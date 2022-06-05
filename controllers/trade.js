@@ -28,8 +28,8 @@ const add = (req, res, next) => {
     buyerPay: req.body.buyerPay,
     sellerPay: req.body.sellerPay,
     escrowId: req.body.escrowId,
-    buyerAgreement: false,
-    sellerAgreement: false,
+    buyerAgreement: req.body.buyerAgreement,
+    sellerAgreement: req.body.sellerAgreement,
   });
   console.log(req.body.escrowId)
   const {
@@ -39,13 +39,15 @@ const add = (req, res, next) => {
     email: contract.emailBuyer
   }).then(user => {
     if (user) {
+      contract.buyerAgreement = false;
+      contract.sellerAgreement = false;
       contract.buyerID = user._id
       contract.save().then((result) => {
         res.status(201).json({
           message: 'contract was sent to other user.',
           contractId: result.id,
           buyerId: user._id,
-          emailSeller: contract.emailSeller
+          emailSeller: contract.emailSeller,
         });
       })
     } else {
@@ -266,6 +268,7 @@ const getNewContractByEmail = async (req, res) => {
 }
 //---------------------- Updtae Status //----------------------
 const updateContract = async (req, res, next) => {
+  console.log(req.body)
   Trade.updateOne({
     escrowId: req.body.escrowId
   }, {
@@ -297,8 +300,10 @@ const setAgreement = async (req, res, next) => {
     }
   }).then(data => {
     res.status(200).json({
-      message: "Update Seller Pay",
-      seller: data
+      message: "Update Seller/buyer Agreements",
+      seller: data,
+      buyerAgreement: data.buyerAgreement,
+      sellerAgreement: data.sellerAgreement
     })
   }, err => {
     res.status(401).json({
