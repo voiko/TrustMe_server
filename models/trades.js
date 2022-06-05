@@ -66,9 +66,11 @@ const tradeSchema = new mongoose.Schema({
     },
     buyerAgreement: {
         type: Boolean,
+        required: true
     },
     sellerAgreement: {
         type: Boolean,
+        required: true
     }
 })
 
