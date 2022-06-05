@@ -12,9 +12,7 @@ App = {
 
   init: async function () {
     console.log(token);
-    console.log(escrowId);
-
-
+    
     return await App.initWeb3();
   },
 
@@ -61,6 +59,8 @@ App = {
   },
 
   bindEvents: function () {
+   
+
 
     $(document).on('click', '.btn-createTrade', App.creat_Trade);
     $(document).on('click', '.btn-getTradeById', App.get_TradeById);
@@ -110,8 +110,7 @@ App = {
   get_TradeById: function (event) {
     event.preventDefault();
 
-
-    escrowId = 64;
+    
 
     web3.eth.getAccounts(function (error, accounts) {
       if (error) {
@@ -122,7 +121,9 @@ App = {
 
       App.contracts.EscrowManager.deployed().then(function (instance) {
         EscrowManagerInstance = instance;
-        console.log(EscrowManagerInstance);
+        console.log(escrowId);
+        console.log(token);
+        
 
         return EscrowManagerInstance.getTradeById(escrowId, {
           from: account
@@ -131,11 +132,34 @@ App = {
         console.log(result.logs[0])
         var sellerPay = result.logs[0].args._sellerPaid;
         var buyerPay = result.logs[0].args._buyerPaid;
+        console.log("**************************")
+        console.log(result.logs[0].args._step['c'][0]
+        )
+        var status;
+        switch (result.logs[0].args._step['c'][0]) {
+          case 0 :
+            status = 'Created';
+            break;
+
+          case 1:
+            status = 'Active';
+            break;
+          
+          case 2:
+            status = 'Closed';
+            break;
+
+          case 3: 
+            status = 'Closed'
+           break;
+          default:
+        }
 
         console.log(sellerPay)
         console.log(buyerPay)
+        console.log(status)
 
-        await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay);
+        await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay , status);
 
         return App.bindEvents();
       }).catch(function (err) {
@@ -149,20 +173,21 @@ App = {
   set_Agreement: function (event) {
     event.preventDefault();
 
-    escrowId = 64;
+    // escrowId = 64;
 
     var contractId = $('#contractId_getAgreement').val();
 
     var EscrowManagerInstance;
 
-    web3.eth.getAccounts(async function (error, accounts) {
+    web3.eth.getAccounts(function (error, accounts) {
       if (error) {
         console.log(error);
       }
       //----just for debuging----------
-      var buyerPay = true;
-      var sellerPay = true;
-      await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay);
+      // var buyerPay = true;
+      // var sellerPay = true;
+      // console.log(escrowId);
+      // await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay);
       //--------------------------------     
       var account = accounts[0];
 
@@ -172,13 +197,14 @@ App = {
         return EscrowManagerInstance.setAgreement(escrowId, {
           from: account
         });
-      }).then(function (result) {
+      }).then(async function (result) {
 
         //TODO chage to this after the testing 
-        // var buyerPay = true;
-        // var sellerPay = true;
+        var buyerPay = true;
+        var sellerPay = true;
+        console.log(escrowId)
 
-        // await UpdateStatusByEscrowId(escrowId , buyerPay , sellerPay);
+        await UpdateStatusByEscrowId(escrowId , buyerPay , sellerPay);
         alert("Deal is done, The money is back")
         return App.bindEvents();
       }).catch(function (err) {
@@ -255,12 +281,8 @@ async function postTransaction(tradeAddress, escrowId) {
 
 }
 
-async function UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay) {
-  var status = 'Active';
-  var id = "629b0728af0e7c6b6ca72c31";
-  //TODO to replace _id to escrowId 
+async function UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay , status) {
   console.log("in the func");
-
   const result = await fetch('http://localhost:3000/api/contracts/updateContract', {
     method: 'POST',
     headers: {
@@ -268,7 +290,7 @@ async function UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay) {
       authorization: token
     },
     body: JSON.stringify({
-      id, //TODO to replace _id to escrowId 
+      escrowId, 
       status,
       sellerPay,
       buyerPay
