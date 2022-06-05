@@ -12,9 +12,7 @@ App = {
 
   init: async function () {
     console.log(token);
-    // console.log(escrowId);
-
-
+    
     return await App.initWeb3();
   },
 
@@ -152,7 +150,7 @@ App = {
             break;
 
           case 3: 
-            status = 'Canceld'
+            status = 'Closed'
            break;
           default:
         }
@@ -181,13 +179,14 @@ App = {
 
     var EscrowManagerInstance;
 
-    web3.eth.getAccounts(async function (error, accounts) {
+    web3.eth.getAccounts(function (error, accounts) {
       if (error) {
         console.log(error);
       }
       //----just for debuging----------
       // var buyerPay = true;
       // var sellerPay = true;
+      // console.log(escrowId);
       // await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay);
       //--------------------------------     
       var account = accounts[0];
@@ -200,9 +199,10 @@ App = {
         });
       }).then(async function (result) {
 
-        console.log(result)
+        //TODO chage to this after the testing 
         var buyerPay = true;
         var sellerPay = true;
+        console.log(escrowId)
 
         await UpdateStatusByEscrowId(escrowId , buyerPay , sellerPay);
         alert("Deal is done, The money is back")
