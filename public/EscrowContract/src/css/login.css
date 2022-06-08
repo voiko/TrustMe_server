@@ -1,9 +1,14 @@
 .backgroundImg{
-    background-image: url('../images/Transcations_img.png');
-    /* display: fixed; */
-    width: 100%;
-    height: 100%;
-    background-size: contain;
+    background-image: url('../images/blockchain.png');
+    display: auto;
+    /* width: 100%; */
+    /* height: 100%; */
+   
+    background-size: cover;
+    
+    /* height: 100%; */
+   
+    /* background-size: contain; */
   }
 
 h1 {
