@@ -67,5 +67,10 @@ p {
 }
 
 .myForm {
-    margin-top: 250px;
+    margin-top: 150px;
+}
+
+.spinner-border { 
+    width: 5rem !important;
+    height: 5rem !important;
 }

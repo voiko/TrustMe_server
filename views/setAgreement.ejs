@@ -30,7 +30,7 @@
 
                     </br>
                     <div class="col">
-                        <button type="submit" class="btn btn-setAgreement" id="submitBtn">Check</button>
+                        <button type="submit" class="btn btn-setAgreement" id="submitBtn1">Check</button>
                     </div>
             </form>
         </form>
@@ -42,6 +42,9 @@
          <b><u></u></b> 
         </label>
       </div>
+      <div class="spinner-border m-5 hide text-secondary" role="status" id = "spinner" style ="display:none;">
+        <span class="sr-only" diplay = "hidden"></span>
+      </div>
 
     <div id="message2" type="test"></div>
     <div id="message3" type="test"></div>
@@ -52,15 +55,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
     <script>
-        var description = '<%- (details.description || null) %>'
-        var depositSeller = '<%- (details.depositSeller || null) %>'
-        var depositBuyer = '<%- (details.depositBuyer || null) %>'
-        var walletAddressSeller = '<%- (details.walletAddressSeller || null) %>'
-        var walletAddressBuyer = '<%- (details.walletAddressBuyer || null) %>'
-        var emailBuyer = '<%- (details.email || null) %>'
         var escrowId = '<%- (details.escrowId || null) %>'
         var token = '<%- (details.token || null) %>'
-
     </script>
     <script src="EscrowContract/src/js/web3.min.js"></script>
     <script src="EscrowContract/src/js/truffle-contract.js"></script>
