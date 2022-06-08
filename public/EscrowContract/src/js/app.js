@@ -58,12 +58,24 @@ App = {
   },
 
   bindEvents: function () {
+    const DeployBtn = document.querySelector('#submitBtn');
+
+    const isChecked = document.querySelector('#flexCheckChecked');
+    isChecked.addEventListener('change', function (e) {
+      if(isChecked.checked){
+        DeployBtn.disabled = false;
+      }else{
+        DeployBtn.disabled = true;
+      }
+    });
+
     $(document).on('click', '.btn-createTrade', App.creat_Trade);
     $(document).on('click', '.btn-getTradeById', App.get_TradeById);
     $(document).on('click', '.btn-setAgreement', App.set_Agreement);
   },
 
   creat_Trade: function (event) {
+    
     event.preventDefault();
 
 
