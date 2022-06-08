@@ -3,9 +3,8 @@ $(function () {
     App.init();
   });
 });
-var trade_index = 0;
-App = {
 
+App = {
   params: null,
   web3Provider: null,
   contracts: {},
@@ -59,9 +58,6 @@ App = {
   },
 
   bindEvents: function () {
-   
-
-
     $(document).on('click', '.btn-createTrade', App.creat_Trade);
     $(document).on('click', '.btn-getTradeById', App.get_TradeById);
     $(document).on('click', '.btn-setAgreement', App.set_Agreement);
@@ -92,13 +88,10 @@ App = {
           });
       }).then(async function (result) {
         console.log(result.logs[0].args);
-        console.log(result.logs[0].args._tradeAddress);
-        console.log(result.logs[0].args._tradeIndex['c'][0]);
 
-        //----Post trade details to backend----------------
+        //====Post trade details to backend===============================================================
         await postTransaction(result.logs[0].args._tradeAddress, result.logs[0].args._tradeIndex['c'][0]);
-        //-------------------------------------------------
-
+        //================================================================================================
 
         return App.bindEvents();
       }).catch(function (err) {
@@ -159,7 +152,9 @@ App = {
         console.log(buyerPay)
         console.log(status)
 
+        //====Post trade details to backend==================================
         await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay , status);
+        //===================================================================
 
         return App.bindEvents();
       }).catch(function (err) {
@@ -173,22 +168,13 @@ App = {
   set_Agreement: function (event) {
     event.preventDefault();
 
-    // escrowId = 64;
-
-    var contractId = $('#contractId_getAgreement').val();
-
     var EscrowManagerInstance;
 
     web3.eth.getAccounts(function (error, accounts) {
       if (error) {
         console.log(error);
       }
-      //----just for debuging----------
-      // var buyerPay = true;
-      // var sellerPay = true;
-      // console.log(escrowId);
-      // await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay);
-      //--------------------------------     
+      
       var account = accounts[0];
 
       App.contracts.EscrowManager.deployed().then(function (instance) {
@@ -198,14 +184,45 @@ App = {
           from: account
         });
       }).then(async function (result) {
+        console.log(result.logs[0])
+        var sellerPay = result.logs[0].args._sellerPaid;
+        var buyerPay = result.logs[0].args._buyerPaid;
 
-        //TODO chage to this after the testing 
-        var buyerPay = true;
-        var sellerPay = true;
-        console.log(escrowId)
+        console.log("Set Agreement")
+  
+        var status;
+        switch (result.logs[0].args._step['c'][0]) {
+          case 0 :
+            status = 'Created';
+            break;
 
-        await UpdateStatusByEscrowId(escrowId , buyerPay , sellerPay);
-        alert("Deal is done, The money is back")
+          case 1:
+            status = 'Active';
+            break;
+          
+          case 2:
+            status = 'Closed';
+            break;
+
+          case 3: 
+            status = 'Closed'
+           break;
+          default:
+        }
+
+        console.log(sellerPay)
+        console.log(buyerPay)
+        console.log("Trade status: "+status)
+
+        //====Post trade details to backend==================================
+        await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay , status);
+        //===================================================================
+
+        if(status == 'Closed'){
+          alert("Deal is done, The money is back")
+        }else{
+          alert("Something went wrong.\n Check that the contract has not expired, And try again later")
+        }
         return App.bindEvents();
       }).catch(function (err) {
         console.log(err.message);
@@ -227,7 +244,6 @@ function searchToObject() {
     pair = pairs[i].split("=");
     obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
   }
-
   return obj;
 }
 
@@ -245,7 +261,6 @@ async function postTransaction(tradeAddress, escrowId) {
   var buyerID = ''
   var buyerPay = false;
   var sellerPay = false;
-
 
   const result = await fetch('http://localhost:3000/api/contracts/add', {
     method: 'POST',
@@ -275,10 +290,7 @@ async function postTransaction(tradeAddress, escrowId) {
   } else if (result.status == 'ok') {
     alert(result.contractId);
   }
-  // trade_index = result.contractId
-  // console.log(trade_index)
-
-
+  console.log(result);
 }
 
 async function UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay , status) {
