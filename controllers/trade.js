@@ -99,7 +99,14 @@ const getNewContractByUserId = async (req, res, next) => {
         ]
       },
       {
-        status: "Waiting",
+        $or: [{
+          status: "Waiting",
+
+        }, {
+          status: "Created"
+        }, {
+          status: "Active"
+        }]
       }
     ]
   }).then(documents => {
