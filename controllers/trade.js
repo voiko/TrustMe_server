@@ -2,6 +2,8 @@ const Trade = require('../models/trades')
 const authenticate = require('../common/auth_middleware') //this virable we will put 
 const User = require('../models/users')
 
+//-- Error message --//
+
 const sendError = (res, code, message) => {
   return res.status(code).send({
     'status': 'failed',
