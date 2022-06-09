@@ -27,7 +27,6 @@ app.use(express.static(__dirname + "/public"));
 const authRouter = require('./routes/auth_route')
 app.use('/api/users', authRouter)
 
-
 const tradeRouter = require('./routes/trade_route');
 app.use('/api/contracts', tradeRouter);
 
@@ -37,19 +36,25 @@ app.use('/api/recommendation', recommendationRouter);
 app.post('/escrow', (req, res) => {
     const payload = req.body;
     console.log(payload);
-    res.render('escrow', {details: payload});
+    res.render('escrow', {
+        details: payload
+    });
 })
 
-app.post('/viewContract',(req,res)=>{
+app.post('/viewContract', (req, res) => {
     const payload = req.body;
     console.log(payload);
-   res.render('viewContract',{details:payload});
+    res.render('viewContract', {
+        details: payload
+    });
 })
 
-app.post('/setAgreement',(req,res)=>{
+app.post('/setAgreement', (req, res) => {
     const payload = req.body;
     console.log(payload);
-   res.render('setAgreement',{details:payload});
+    res.render('setAgreement', {
+        details: payload
+    });
 })
 
 const homeRouter = require('./routes/home_route')
