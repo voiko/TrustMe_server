@@ -108,10 +108,11 @@ App = {
         //====Post trade details to backend===============================================================
         await postTransaction(result.logs[0].args._tradeAddress, result.logs[0].args._tradeIndex['c'][0]);
         //================================================================================================
-
+        window.location.replace('http://localhost:4200/')
         return App.bindEvents();
       }).catch(function (err) {
         console.log(err.message);
+        window.location.replace('http://localhost:4200/')
       });
     });
   },
@@ -172,14 +173,17 @@ App = {
         //====Post trade details to backend==================================
         await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay , status);
         //===================================================================
+      
+        window.location.replace('http://localhost:4200/')
 
         return App.bindEvents();
       }).catch(function (err) {
         console.log(err.message);
+      
+        window.location.replace('http://localhost:4200/')
       });
 
     });
-    // window.location.replace('http://localhost:4200/')
   },
 
   set_Agreement: function (event) {
@@ -240,12 +244,14 @@ App = {
 
         if(status == 'Closed'){
           alert("Deal is done, The money is back")
+          window.location.replace('http://localhost:4200/')
         }else{
           alert("Something went wrong.\n Check that the contract has not expired, And try again later")
         }
         return App.bindEvents();
       }).catch(function (err) {
         console.log(err.message);
+        window.location.replace('http://localhost:4200/')
       });
     });
   },
