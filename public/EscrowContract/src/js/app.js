@@ -82,6 +82,9 @@ App = {
     DeletBtn.disabled = true;
     event.preventDefault();
 
+    //convert ether to wei
+    var depositSellerWei = depositSeller*1000000000000000000;
+    var depositBuyerWei = depositBuyer*1000000000000000000;
 
     var expired_time = convetDateToTimStamp(date);
 
@@ -94,12 +97,16 @@ App = {
       }
 
       var account = accounts[0];
-
+      
+      
       App.contracts.EscrowManager.deployed().then(function (instance) {
         EscrowManagerInstance = instance;
+        // await weiToEther(depositSeller);
+        // await weiToEther(depositBuyer);
+        console.log(depositSellerWei)
 
         return EscrowManagerInstance.createTrade(walletAddressSeller, walletAddressBuyer,
-          depositSeller, depositBuyer, expired_time, {
+          depositSellerWei, depositBuyerWei, expired_time, {
             from: account
           });
       }).then(async function (result) {
