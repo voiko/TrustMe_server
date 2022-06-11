@@ -5,18 +5,14 @@ $(function () {
 });
 
 App = {
-  params: null,
   web3Provider: null,
   contracts: {},
 
   init: async function () {
-    console.log(token);
-
     return await App.initWeb3();
   },
 
   initWeb3: async function () {
-
     // Modern dapp browsers...
     if (window.ethereum) {
       App.web3Provider = window.ethereum;
@@ -44,7 +40,6 @@ App = {
   },
 
   initContract: function () {
-
     $.getJSON('/EscrowContract/build/contracts/EscrowManager.json', function (data) {
       // Get the necessary contract artifact file and instantiate it with @truffle/contract
       var EscrowManagerArtifact = data;
@@ -53,13 +48,11 @@ App = {
       // Set the provider for our contract
       App.contracts.EscrowManager.setProvider(App.web3Provider);
     });
-
     return App.bindEvents();
   },
 
   bindEvents: function () {
     const DeployBtn = document.querySelector('#submitBtn');
-
     const isChecked = document.querySelector('#flexCheckChecked');
     isChecked.addEventListener('change', function (e) {
       if (isChecked.checked) {
@@ -69,6 +62,7 @@ App = {
       }
     });
 
+    $(document).on('click', '.btn-delete', App.Delete);
     $(document).on('click', '.btn-createTrade', App.creat_Trade);
     $(document).on('click', '.btn-getTradeById', App.get_TradeById);
     $(document).on('click', '.btn-setAgreement', App.set_Agreement);
@@ -88,16 +82,13 @@ App = {
 
     var expired_time = convetDateToTimStamp(date);
 
-
     var EscrowManagerInstance;
 
     web3.eth.getAccounts(function (error, accounts) {
       if (error) {
         console.log(error);
       }
-
       var account = accounts[0];
-
 
       App.contracts.EscrowManager.deployed().then(function (instance) {
         EscrowManagerInstance = instance;
@@ -111,7 +102,6 @@ App = {
           });
       }).then(async function (result) {
         console.log(result.logs[0].args);
-
         //====Post trade details to backend===============================================================
         await postTransaction(result.logs[0].args._tradeAddress, result.logs[0].args._tradeIndex['c'][0]);
         //================================================================================================
@@ -119,6 +109,7 @@ App = {
         return App.bindEvents();
       }).catch(function (err) {
         console.log(err.message);
+        alert("Something went wrong.\ntry again later")
         window.location.replace('http://localhost:4200/')
       });
     });
@@ -134,14 +125,11 @@ App = {
       if (error) {
         console.log(error);
       }
-
       var account = accounts[0];
 
       App.contracts.EscrowManager.deployed().then(function (instance) {
         EscrowManagerInstance = instance;
         console.log(escrowId);
-        console.log(token);
-
 
         return EscrowManagerInstance.getTradeById(escrowId, {
           from: account
@@ -171,24 +159,19 @@ App = {
             break;
           default:
         }
-
         console.log(sellerPay)
         console.log(buyerPay)
         console.log(status)
-
         //====Post trade details to backend==================================
         await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay, status);
         //===================================================================
-
         window.location.replace('http://localhost:4200/')
-
         return App.bindEvents();
       }).catch(function (err) {
         console.log(err.message);
-
+        alert("Something went wrong.\ntry again later")
         window.location.replace('http://localhost:4200/')
       });
-
     });
   },
 
@@ -204,7 +187,6 @@ App = {
       if (error) {
         console.log(error);
       }
-
       var account = accounts[0];
 
       App.contracts.EscrowManager.deployed().then(function (instance) {
@@ -215,10 +197,6 @@ App = {
         });
       }).then(async function (result) {
         console.log(result.logs[0])
-        var sellerPay = result.logs[0].args._sellerPaid;
-        var buyerPay = result.logs[0].args._buyerPaid;
-
-        console.log("Set Agreement")
 
         var status;
         switch (result.logs[0].args._step['c'][0]) {
@@ -239,20 +217,18 @@ App = {
             break;
           default:
         }
-
         console.log(sellerPay)
         console.log(buyerPay)
         console.log("Trade status: " + status)
-
         //====Post trade details to backend==================================
         await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay, status);
         //===================================================================
-
         if (status == 'Closed') {
-          alert("Deal is done, The money is back")
+          alert("The Trade is done, The money is back")
           window.location.replace('http://localhost:4200/')
         } else {
           alert("Something went wrong.\n Check that the contract has not expired, And try again later")
+          window.location.replace('http://localhost:4200/')
         }
         return App.bindEvents();
       }).catch(function (err) {
@@ -261,23 +237,11 @@ App = {
       });
     });
   },
-
-};
-
-function searchToObject() {
-  var pairs = window.location.search.substring(1).split("&"),
-    obj = {},
-    pair,
-    i;
-
-  for (i in pairs) {
-    if (pairs[i] === "") continue;
-
-    pair = pairs[i].split("=");
-    obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+  Delete: function(event){
+    event.preventDefault();
+    window.location.replace('http://localhost:4200/')
   }
-  return obj;
-}
+};
 
 function convetDateToTimStamp(date) {
   var date = date.split("/");
@@ -288,8 +252,6 @@ function convetDateToTimStamp(date) {
 async function postTransaction(tradeAddress, escrowId) {
   var status = 'Waiting';
   var creator = '';
-  console.log(tradeAddress)
-  console.log(escrowId)
   var buyerID = ''
   var buyerPay = false;
   var sellerPay = false;
@@ -326,7 +288,6 @@ async function postTransaction(tradeAddress, escrowId) {
 }
 
 async function UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay, status) {
-  console.log("in the func");
   const result = await fetch('http://localhost:3000/api/contracts/updateContract', {
     method: 'POST',
     headers: {
@@ -347,3 +308,4 @@ async function UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay, status) {
   }
   console.log(result);
 }
+
