@@ -1,14 +1,10 @@
 .backgroundImg{
     background-image: url('../images/blockchain.png');
-    display: auto;
-    /* width: 100%; */
-    /* height: 100%; */
-   
     background-size: cover;
-    
-    /* height: 100%; */
-   
-    /* background-size: contain; */
+  }
+.backgroundImg_escrow{
+    background-image: url('../images/Transcations_img.png');
+    background-size: cover;
   }
 
 h1 {
@@ -29,7 +25,6 @@ p {
 .btn{
     background-color: #00c2cb !important;
     margin-bottom: 25px;
-    /* color: #fdfefe !important; */
 }
 
 .navbar-brand{
@@ -66,6 +61,22 @@ p {
     margin-right: 15px;
 
 }
+
+.form-check{
+    margin-top:70px;
+    margin-left: -150px;
+    /* font-family: 'Courier New', Courier, monospace; */
+    font-style: italic;
+    font-size: 16px;
+}
+.form-check-confirm{
+    margin-top:10px;
+    margin-left: 50px;
+    /* font-family: 'Courier New', Courier, monospace; */
+    font-style: italic;
+    font-size: 16px;
+}
+
 
 .main {
     text-align: center;

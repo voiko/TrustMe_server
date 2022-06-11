@@ -11,7 +11,7 @@ App = {
 
   init: async function () {
     console.log(token);
-    
+
     return await App.initWeb3();
   },
 
@@ -59,16 +59,16 @@ App = {
 
   bindEvents: function () {
     const DeployBtn = document.querySelector('#submitBtn');
-    
+
     const isChecked = document.querySelector('#flexCheckChecked');
     isChecked.addEventListener('change', function (e) {
-      if(isChecked.checked){
+      if (isChecked.checked) {
         DeployBtn.disabled = false;
-      }else{
+      } else {
         DeployBtn.disabled = true;
       }
     });
-    
+
     $(document).on('click', '.btn-createTrade', App.creat_Trade);
     $(document).on('click', '.btn-getTradeById', App.get_TradeById);
     $(document).on('click', '.btn-setAgreement', App.set_Agreement);
@@ -83,8 +83,8 @@ App = {
     event.preventDefault();
 
     //convert ether to wei
-    var depositSellerWei = depositSeller*1000000000000000000;
-    var depositBuyerWei = depositBuyer*1000000000000000000;
+    var depositSellerWei = depositSeller * 1000000000000000000;
+    var depositBuyerWei = depositBuyer * 1000000000000000000;
 
     var expired_time = convetDateToTimStamp(date);
 
@@ -97,8 +97,8 @@ App = {
       }
 
       var account = accounts[0];
-      
-      
+
+
       App.contracts.EscrowManager.deployed().then(function (instance) {
         EscrowManagerInstance = instance;
         // await weiToEther(depositSeller);
@@ -141,7 +141,7 @@ App = {
         EscrowManagerInstance = instance;
         console.log(escrowId);
         console.log(token);
-        
+
 
         return EscrowManagerInstance.getTradeById(escrowId, {
           from: account
@@ -151,25 +151,24 @@ App = {
         var sellerPay = result.logs[0].args._sellerPaid;
         var buyerPay = result.logs[0].args._buyerPaid;
         console.log("**************************")
-        console.log(result.logs[0].args._step['c'][0]
-        )
+        console.log(result.logs[0].args._step['c'][0])
         var status;
         switch (result.logs[0].args._step['c'][0]) {
-          case 0 :
+          case 0:
             status = 'Created';
             break;
 
           case 1:
             status = 'Active';
             break;
-          
+
           case 2:
             status = 'Closed';
             break;
 
-          case 3: 
+          case 3:
             status = 'Closed'
-           break;
+            break;
           default:
         }
 
@@ -178,15 +177,15 @@ App = {
         console.log(status)
 
         //====Post trade details to backend==================================
-        await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay , status);
+        await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay, status);
         //===================================================================
-      
+
         window.location.replace('http://localhost:4200/')
 
         return App.bindEvents();
       }).catch(function (err) {
         console.log(err.message);
-      
+
         window.location.replace('http://localhost:4200/')
       });
 
@@ -205,7 +204,7 @@ App = {
       if (error) {
         console.log(error);
       }
-      
+
       var account = accounts[0];
 
       App.contracts.EscrowManager.deployed().then(function (instance) {
@@ -220,39 +219,39 @@ App = {
         var buyerPay = result.logs[0].args._buyerPaid;
 
         console.log("Set Agreement")
-  
+
         var status;
         switch (result.logs[0].args._step['c'][0]) {
-          case 0 :
+          case 0:
             status = 'Created';
             break;
 
           case 1:
             status = 'Active';
             break;
-          
+
           case 2:
             status = 'Closed';
             break;
 
-          case 3: 
+          case 3:
             status = 'Closed'
-           break;
+            break;
           default:
         }
 
         console.log(sellerPay)
         console.log(buyerPay)
-        console.log("Trade status: "+status)
+        console.log("Trade status: " + status)
 
         //====Post trade details to backend==================================
-        await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay , status);
+        await UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay, status);
         //===================================================================
 
-        if(status == 'Closed'){
+        if (status == 'Closed') {
           alert("Deal is done, The money is back")
           window.location.replace('http://localhost:4200/')
-        }else{
+        } else {
           alert("Something went wrong.\n Check that the contract has not expired, And try again later")
         }
         return App.bindEvents();
@@ -326,7 +325,7 @@ async function postTransaction(tradeAddress, escrowId) {
   console.log(result);
 }
 
-async function UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay , status) {
+async function UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay, status) {
   console.log("in the func");
   const result = await fetch('http://localhost:3000/api/contracts/updateContract', {
     method: 'POST',
@@ -335,7 +334,7 @@ async function UpdateStatusByEscrowId(escrowId, buyerPay, sellerPay , status) {
       authorization: token
     },
     body: JSON.stringify({
-      escrowId, 
+      escrowId,
       status,
       sellerPay,
       buyerPay

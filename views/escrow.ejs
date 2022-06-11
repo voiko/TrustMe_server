@@ -10,10 +10,10 @@
   <title>Trust Me</title>
 </head>
 
-<body class="backgroundImg">
+<body class="backgroundImg_escrow">
   <nav class="navbar ">
     <span>
-      <label class="navbar-brand">Trust Me <label class="navbar-subTitel">Create your contract</label> </label>
+      <label class="navbar-brand">Trust Me <label class="navbar-subTitel">Contract's Details</label> </label>
     </span>
 
   </nav>
@@ -23,7 +23,7 @@
       <form id="register">
         <form class="row g-3">
           <div class="col">
-            <h4>Contract`s details</h4>
+            <h4 style="font-weight:bold; font-size:34px;">Summary</h4>
             </br>
             <label><b>Description: </b></label>
             <label><%=details.description%></label>
@@ -31,7 +31,7 @@
           </div>
           <div class="col">
             <label><b>Buyer Email: </b></label>
-            <label ><%=details.email%></label>
+            <label><%=details.email%></label>
             <!-- <label for="exampleInputEmail1" class="form-label" id="email"></label> -->
           </div>
           <div class="col">
@@ -51,7 +51,7 @@
           </div>
           <div class="col">
             <label><b>Buyer Amount: </b></label>
-            
+
             <label><%=details.depositBuyer%></label>
             <!-- <label id="depositBuyer"></label> -->
           </div>
@@ -68,26 +68,28 @@
         </form>
       </form>
     </section>
-    <section class="child">
-    </br>
-    <label><b>Notice!</b></label>
-    </br>
-    </br>
-    <b><p>Once you click 'depley', your contract will be created in the blockchain.</p>
-    <p>Please confirm that you have read the rules for using the application</p>
-    <p>on the application's main website.</p></b>
-    </br>
+    <section class="child form-check">
+      </br>
+      <label><b>Notice!</b></label>
+      </br>
+      </br>
+      <b>
+        <p>Once you click 'depley', your contract will be created in the blockchain.</p>
+        <p>Please confirm that you have read the rules for using the application</p>
+        <p>on the application's main website.</p>
+      </b>
+      </br>
 
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" >
-      <label class="form-check-label" for="flexCheckChecked">
-       <b><u>Confirm</u></b> 
-      </label>
-    </div>
+      <div class="form-check-confirm">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+        <label class="form-check-label" for="flexCheckChecked">
+          <b>Confirm</b>
+        </label>
+      </div>
 
-    <div class="spinner-border m-5 hide text-secondary" role="status" id = "spinner" style ="display:none;">
-      <span class="sr-only" diplay = "hidden"></span>
-    </div>
+      <div class="spinner-border m-5 hide text-secondary" role="status" id="spinner" style="display:none;">
+        <span class="sr-only" diplay="hidden"></span>
+      </div>
 
     </section>
     <div id="message2" type="test"></div>
@@ -107,8 +109,7 @@
       var emailBuyer = '<%- (details.email || null) %>'
       var date = '<%- (details.date || null) %>'
       var token = '<%- (details.token || null) %>'
-      
-  </script>
+    </script>
     <script src="EscrowContract/src/js/web3.min.js"></script>
     <script src="EscrowContract/src/js/truffle-contract.js"></script>
     <script src="EscrowContract/src/js/app.js"></script>
