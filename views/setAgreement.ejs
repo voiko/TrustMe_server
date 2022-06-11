@@ -5,29 +5,22 @@
     <meta charset="UTF-8" />
     <link href="EscrowContract/src/css/login.css" rel="stylesheet">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
-
     <title>Trust Me</title>
 </head>
-
 <body class="backgroundImg">
     <nav class="navbar ">
         <span>
             <label class="navbar-brand">Trust Me <label class="navbar-subTitel">Money returns</label> </label>
         </span>
-
     </nav>
-
     <div class=" main">
         <form class="myForm">
             <form class="row g-3">
                 <div class="col">
                     <h4>Get your money back</h4>
-
                     </br>
                     <p><b>Update the status of your contract</b></p>
                     <p><b>from the data in the blockchain</b></p>
-
                     </br>
                     <div class="col">
                         <button type="submit" class="btn btn-setAgreement" id="submitBtn1">Check</button>
@@ -35,7 +28,6 @@
             </form>
         </form>
     </div>
-
     <div class="form-check">
         <input class="form-check-input" type="hidden"value="" id="flexCheckChecked" >
         <label class="form-check-label" for="flexCheckChecked">
@@ -45,15 +37,7 @@
       <div class="spinner-border m-5 hide text-secondary" role="status" id = "spinner" style ="display:none;">
         <span class="sr-only" diplay = "hidden"></span>
       </div>
-
-    <div id="message2" type="test"></div>
-    <div id="message3" type="test"></div>
-    <div id="message4" type="test"></div>
-    <div id="message5" type="test"></div>
-    <div id="message6" type="test"></div>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
     <script>
         var escrowId = '<%- (details.escrowId || null) %>'
         var token = '<%- (details.token || null) %>'
@@ -64,5 +48,4 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </body>
-
 </html>
