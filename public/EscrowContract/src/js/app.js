@@ -197,7 +197,8 @@ App = {
         });
       }).then(async function (result) {
         console.log(result.logs[0])
-
+        var sellerPay = result.logs[0].args._sellerPaid;
+        var buyerPay = result.logs[0].args._buyerPaid;
         var status;
         switch (result.logs[0].args._step['c'][0]) {
           case 0:
